@@ -6,6 +6,7 @@ import com.zytd.account.books.biz.accountbooks.service.AccountBooksService;
 import com.zytd.account.books.biz.accountbooks.vo.AccountBooksPageVO;
 import com.zytd.account.books.biz.accountbooks.vo.AccountBooksVO;
 import com.zytd.account.books.common.base.BaseController;
+import com.zytd.account.books.common.base.Result;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.Assert;
@@ -31,20 +32,23 @@ public class AccountBooksController extends BaseController {
     }
 
     @RequestMapping("/add")
-    public void add(@RequestBody AccountBooksBO bo){
+    public Result add(@RequestBody AccountBooksBO bo){
         log.info(bo.toString());
+        return Result.success();
     }
 
     @RequestMapping("/edit")
-    public void edit(@RequestBody AccountBooksBO bo){
+    public Result edit(@RequestBody AccountBooksBO bo){
         Assert.notNull(bo.getId(),"不能为空");
         log.info(bo.toString());
+        return Result.success();
     }
 
     @RequestMapping("/delete")
-    public void delete(@RequestBody AccountBooksBO bo){
-        Assert.notNull(bo.getId(),"不能为空");
-        log.info(bo.toString());
+    public Result delete(Integer id){
+        Assert.notNull(id,"不能为空");
+        log.info(id.toString());
+        return Result.error("账本不存在");
     }
 
     @RequestMapping("/detail")

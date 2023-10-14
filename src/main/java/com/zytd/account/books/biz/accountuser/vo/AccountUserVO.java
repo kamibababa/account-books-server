@@ -5,7 +5,7 @@ import lombok.Data;
 import java.io.Serializable;
 
 @Data
-public class UserVO implements Serializable {
+public class AccountUserVO implements Serializable {
 
     private Integer userId;
 
@@ -13,14 +13,14 @@ public class UserVO implements Serializable {
 
     private String mobile;
 
-    private String address;
+    private String area;
+
+    private String areaDetail;
 
     private String remark;
 
     private String  status;
 
     private String createDate;
-
-    private String endDate;
 
 }

@@ -6,9 +6,9 @@ import lombok.Data;
 import java.util.List;
 
 @Data
-public class UserPageVO extends Page<UserVO> {
+public class AccountUserPageVO extends Page<AccountUserVO> {
 
-    public UserPageVO(int PageNum, int pageSize, int total, List<UserVO> data){
+    public AccountUserPageVO(int PageNum, int pageSize, int total, List<AccountUserVO> data){
         super(PageNum,pageSize);
         setRecords(data);
         setTotal(total);

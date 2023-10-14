@@ -3,7 +3,6 @@ package com.zytd.account.books.biz.accountbooks.service.impl;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
 import com.zytd.account.books.biz.accountbooks.bo.AccountBooksPageBO;
-import com.zytd.account.books.biz.accountbooks.enums.AccountBookStatusEnum;
 import com.zytd.account.books.biz.accountbooks.service.AccountBooksService;
 import com.zytd.account.books.biz.accountbooks.vo.AccountBooksPageVO;
 import com.zytd.account.books.biz.accountbooks.vo.AccountBooksVO;
@@ -220,7 +219,6 @@ public class AccountBooksServiceImpl implements AccountBooksService {
             accountBooksVO.setUserId(count);
             accountBooksVO.setArea("北京市/北京市/东城区");
             accountBooksVO.setAreaDetail("我不知道这个是什么地方，记录一下");
-            accountBooksVO.setStatus(AccountBookStatusEnum.getByCode(Integer.parseInt(accountBooksVO.getStatus())).getDesc());
             accountBooksVO.setCreateDate(DateFormatUtils.format(new Date(), "yyyy-MM-dd"));
             totalAmount = totalAmount.add(accountBooksVO.getAccountAmount());
         }

@@ -21,6 +21,8 @@
   - [ ] TODO
 - [ ] MybatisPlus集成
 - [ ] Swagger2集成
+- [ ] logback集成
+- [ ] 登录及页面鉴权组件选型：如spring security
 ---
 3. 项目分层目录
 ```
