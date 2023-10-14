@@ -1,10 +1,8 @@
-package com.zytd.account.books.user.vo;
+package com.zytd.account.books.biz.accountuser.vo;
 
 import com.baomidou.mybatisplus.plugins.Page;
-import com.zytd.account.books.acountbooks.vo.AccountBooksVO;
 import lombok.Data;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 @Data

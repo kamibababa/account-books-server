@@ -1,10 +1,10 @@
-package com.zytd.account.books.acountbooks.controller;
+package com.zytd.account.books.biz.accountbooks.controller;
 
-import com.zytd.account.books.acountbooks.bo.AccountBooksBO;
-import com.zytd.account.books.acountbooks.bo.AccountBooksPageBO;
-import com.zytd.account.books.acountbooks.service.AccountBooksService;
-import com.zytd.account.books.acountbooks.vo.AccountBooksPageVO;
-import com.zytd.account.books.acountbooks.vo.AccountBooksVO;
+import com.zytd.account.books.biz.accountbooks.bo.AccountBooksBO;
+import com.zytd.account.books.biz.accountbooks.bo.AccountBooksPageBO;
+import com.zytd.account.books.biz.accountbooks.service.AccountBooksService;
+import com.zytd.account.books.biz.accountbooks.vo.AccountBooksPageVO;
+import com.zytd.account.books.biz.accountbooks.vo.AccountBooksVO;
 import com.zytd.account.books.common.base.BaseController;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

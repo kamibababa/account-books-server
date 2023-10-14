@@ -1,4 +1,4 @@
-package com.zytd.account.books.user.bo;
+package com.zytd.account.books.biz.accountuser.bo;
 
 import com.zytd.account.books.common.base.AbstractPageBO;
 import lombok.Data;

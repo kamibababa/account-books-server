@@ -1,18 +1,17 @@
-package com.zytd.account.books.user.controller;
+package com.zytd.account.books.biz.accountuser.controller;
 
 
-import com.zytd.account.books.user.bo.UserPageBO;
-import com.zytd.account.books.user.enums.UserStatusEnum;
-import com.zytd.account.books.user.enums.UserTypeEnum;
-import com.zytd.account.books.user.vo.UserPageVO;
-import com.zytd.account.books.user.vo.UserVO;
+import com.zytd.account.books.biz.accountuser.bo.UserPageBO;
+import com.zytd.account.books.biz.accountuser.enums.UserStatusEnum;
+import com.zytd.account.books.biz.accountuser.enums.UserTypeEnum;
+import com.zytd.account.books.biz.accountuser.vo.UserPageVO;
+import com.zytd.account.books.biz.accountuser.vo.UserVO;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.Date;
 
 @RestController

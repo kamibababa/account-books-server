@@ -1,14 +1,11 @@
-package com.zytd.account.books.acountbooks.vo;
+package com.zytd.account.books.biz.accountuser.vo;
 
 import lombok.Data;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 
 @Data
-public class AccountBooksVO implements Serializable {
-
-    private Integer id;
+public class UserVO implements Serializable {
 
     private Integer userId;
 
@@ -16,15 +13,11 @@ public class AccountBooksVO implements Serializable {
 
     private String mobile;
 
-    private String area;
-
-    private String areaDetail;
+    private String address;
 
     private String remark;
 
     private String  status;
-
-    private BigDecimal accountAmount;
 
     private String createDate;
 

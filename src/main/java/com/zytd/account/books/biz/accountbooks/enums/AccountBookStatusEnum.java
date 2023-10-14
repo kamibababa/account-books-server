@@ -1,4 +1,4 @@
-package com.zytd.account.books.acountbooks.enums;
+package com.zytd.account.books.biz.accountbooks.enums;
 
 
 import lombok.AllArgsConstructor;

@@ -1,4 +1,4 @@
-package com.zytd.account.books.common.config;
+package com.zytd.account.books.config;
 
 
 import com.zytd.account.books.common.base.BizException;

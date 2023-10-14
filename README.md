@@ -13,11 +13,11 @@
 - [ ] controller层出入参打印，操作日志表记录
 - [ ] 定时任务集成
 - [ ] 记账表结构设计
-  - [ ] 记账表
-  - [ ] 记账用户表
-  - [ ] 操作日志表
-  - [ ] 用户三方登录表
-  - [ ] 消息记录表（账单提醒消息）
+  - [ ] 记账表【biz_xx】
+  - [ ] 记账用户表【biz_xx】
+  - [ ] 操作日志表【biz_xx】
+  - [ ] 用户三方登录表【base_xx】
+  - [ ] 消息记录表（账单提醒消息）【biz_xx】
   - [ ] TODO
 - [ ] MybatisPlus集成
 - [ ] Swagger2集成
@@ -25,17 +25,20 @@
 3. 项目分层目录
 ```
 -----common（公共组件和配置项等）
------accountbooks
-        |--domain
-        |--dao
-        |--service
-            |--impl
-                |--xxxServiceImpl.class
-            |--xxxService.class
-        |--controller
-        |--bo
-        |--vo
-        |--enums
+-----base（基础信息表：字典、配置、人员等基础信息）
+       |--同biz
+-----biz（业务相关表）
+       |--accountbooks
+            |--domain
+            |--dao
+            |--service
+                |--impl
+                    |--xxxServiceImpl.class
+                |--xxxService.class
+            |--controller
+            |--bo
+            |--vo
+            |--enums
 ```
 ---
 4. 支持功能
