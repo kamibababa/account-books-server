@@ -5,7 +5,7 @@ import com.zytd.account.books.acountbooks.bo.AccountBooksPageBO;
 import com.zytd.account.books.acountbooks.service.AccountBooksService;
 import com.zytd.account.books.acountbooks.vo.AccountBooksPageVO;
 import com.zytd.account.books.acountbooks.vo.AccountBooksVO;
-import com.zytd.account.books.config.base.BaseController;
+import com.zytd.account.books.common.base.BaseController;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.Assert;

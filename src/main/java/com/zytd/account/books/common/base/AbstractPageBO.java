@@ -1,4 +1,4 @@
-package com.zytd.account.books.config.base;
+package com.zytd.account.books.common.base;
 
 import lombok.Data;
 

@@ -1,6 +1,6 @@
 package com.zytd.account.books.user.bo;
 
-import com.zytd.account.books.config.base.AbstractPageBO;
+import com.zytd.account.books.common.base.AbstractPageBO;
 import lombok.Data;
 
 @Data
