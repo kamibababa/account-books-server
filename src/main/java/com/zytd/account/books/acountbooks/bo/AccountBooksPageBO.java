@@ -6,6 +6,8 @@ import lombok.Data;
 @Data
 public class AccountBooksPageBO extends AbstractPageBO {
 
+    private Integer id;
+
     private String username;
 
     private String mobile;

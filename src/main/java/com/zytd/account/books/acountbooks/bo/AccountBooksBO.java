@@ -7,6 +7,8 @@ import java.io.Serializable;
 @Data
 public class AccountBooksBO  implements Serializable {
 
+    private Integer id;
+
     private Integer userId;
 
     private String username;
@@ -17,6 +19,6 @@ public class AccountBooksBO  implements Serializable {
 
     private String remark;
 
-    private Integer status;
+    private String status;
 
 }

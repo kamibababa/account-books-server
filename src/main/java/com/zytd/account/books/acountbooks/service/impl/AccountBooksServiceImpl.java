@@ -216,7 +216,12 @@ public class AccountBooksServiceImpl implements AccountBooksService {
                 ).collect(Collectors.toList());
         }
         BigDecimal totalAmount = BigDecimal.ZERO;
+        int count = 1;
         for (AccountBooksVO accountBooksVO : accountBooksVOS) {
+            accountBooksVO.setId(count++);
+            accountBooksVO.setUserId(count);
+            accountBooksVO.setArea("北京市/北京市/东城区");
+            accountBooksVO.setAreaDetail("我不知道这个是什么地方，记录一下");
             accountBooksVO.setStatus(AccountBookStatusEnum.getByCode(Integer.parseInt(accountBooksVO.getStatus())).getDesc());
             accountBooksVO.setCreateDate(DateFormatUtils.format(new Date(), "yyyy-MM-dd"));
             totalAmount = totalAmount.add(accountBooksVO.getAccountAmount());

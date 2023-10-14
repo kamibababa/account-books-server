@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 
@@ -35,7 +36,18 @@ public class AccountUserController {
         userVO.setStatus(UserStatusEnum.ENABLE.getDesc());
         userVO.setRemark("灰太狼在哪里");
         userVO.setMobile("9999999999");
-        return new UserPageVO(1,10,1, Collections.singletonList(userVO));
+
+        UserVO userVO1 = new UserVO();
+        userVO1.setUserId(2);
+        userVO1.setUsername("小地瓜");
+        userVO1.setAddress("超级瓜瓜城1单元02号");
+        userVO1.setCreateDate(DateFormatUtils.format(new Date(),"yyyy-MM-dd HH:mm:ss"));
+        userVO1.setEndDate(DateFormatUtils.format(new Date(),"yyyy-MM-dd HH:mm:ss"));
+        userVO1.setStatus(UserStatusEnum.ENABLE.getDesc());
+        userVO1.setRemark("大西瓜在哪里");
+        userVO1.setMobile("000000000");
+        return new UserPageVO(1,10,1, Arrays.asList(userVO,userVO1));
     }
+
 
 }

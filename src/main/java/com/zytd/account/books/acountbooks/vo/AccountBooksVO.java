@@ -8,13 +8,17 @@ import java.math.BigDecimal;
 @Data
 public class AccountBooksVO implements Serializable {
 
+    private Integer id;
+
     private Integer userId;
 
     private String username;
 
     private String mobile;
 
-    private String address;
+    private String area;
+
+    private String areaDetail;
 
     private String remark;
 
