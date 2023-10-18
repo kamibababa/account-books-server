@@ -9,6 +9,7 @@ import com.zytd.account.books.biz.accountuser.vo.AccountUserPageVO;
 import com.zytd.account.books.biz.accountuser.vo.AccountUserVO;
 import com.zytd.account.books.common.base.Result;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.util.Assert;
@@ -32,7 +33,7 @@ public class AccountUserController {
         // 参数
         userPageBO.setUserType(UserTypeEnum.C_USER.getCode());
         // 结果
-        ArrayList<AccountUserVO> users = new ArrayList<>();
+        List<AccountUserVO> users = new ArrayList<>();
         AccountUserVO userVO = new AccountUserVO();
         userVO.setUserId(1);
         userVO.setUsername("小红帽");
@@ -68,6 +69,9 @@ public class AccountUserController {
             BeanUtils.copyProperties(userVO2,userVO3);
             userVO3.setUserId(i + 4);
             users.add(userVO3);
+        }
+        if(StringUtils.isNotBlank(userPageBO.getUsername())){
+            users = users.stream().filter(u -> u.getUsername().contains(userPageBO.getUsername())).collect(Collectors.toList());
         }
         return new AccountUserPageVO(1,10,users.size(), users);
     }
