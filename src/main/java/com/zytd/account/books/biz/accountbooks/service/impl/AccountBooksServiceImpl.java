@@ -1,7 +1,5 @@
 package com.zytd.account.books.biz.accountbooks.service.impl;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.TypeReference;
 import com.zytd.account.books.biz.accountbooks.bo.AccountBooksPageBO;
 import com.zytd.account.books.biz.accountbooks.service.AccountBooksService;
 import com.zytd.account.books.biz.accountbooks.vo.AccountBooksPageVO;
@@ -13,8 +11,10 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 @Service
@@ -23,188 +23,8 @@ public class AccountBooksServiceImpl implements AccountBooksService {
 
     @Override
     public AccountBooksPageVO list(AccountBooksPageBO bo) {
-        String exampleJson = "[\n" +
-                "    {\n" +
-                "        \"username\": \"小xx-1号\",\n" +
-                "        \"mobile\": \"12333333309\",\n" +
-                "        \"address\": \"梦想一号小店\",\n" +
-                "        \"remark\": \"one\",\n" +
-                "        \"endDate\": \"2999-01-01\",\n" +
-                "        \"accountAmount\": \"10000.33\",\n" +
-                "        \"status\": \"1\"\n" +
-                "    },{\n" +
-                "        \"username\": \"小xx-1号\",\n" +
-                "        \"mobile\": \"12333333309\",\n" +
-                "        \"address\": \"梦想一号小店\",\n" +
-                "        \"remark\": \"two\",\n" +
-                "        \"endDate\": \"2999-01-01\",\n" +
-                "        \"accountAmount\": \"10000.33\",\n" +
-                "        \"status\": \"1\"\n" +
-                "    },{\n" +
-                "        \"username\": \"小xx-1号\",\n" +
-                "        \"mobile\": \"12333333309\",\n" +
-                "        \"address\": \"梦想一号小店\",\n" +
-                "        \"remark\": \"three\",\n" +
-                "        \"endDate\": \"2999-01-01\",\n" +
-                "        \"accountAmount\": \"10000.33\",\n" +
-                "        \"status\": \"1\"\n" +
-                "    },{\n" +
-                "        \"username\": \"小xx-1号\",\n" +
-                "        \"mobile\": \"12333333309\",\n" +
-                "        \"address\": \"梦想一号小店\",\n" +
-                "        \"remark\": \"four\",\n" +
-                "        \"endDate\": \"2999-01-01\",\n" +
-                "        \"accountAmount\": \"10000.33\",\n" +
-                "        \"status\": \"1\"\n" +
-                "    },{\n" +
-                "        \"username\": \"小xx-1号\",\n" +
-                "        \"mobile\": \"12333333309\",\n" +
-                "        \"address\": \"梦想一号小店\",\n" +
-                "        \"remark\": \"five\",\n" +
-                "        \"endDate\": \"2999-01-01\",\n" +
-                "        \"accountAmount\": \"10000.33\",\n" +
-                "        \"status\": \"1\"\n" +
-                "    },{\n" +
-                "        \"username\": \"小xx-1号\",\n" +
-                "        \"mobile\": \"12333333309\",\n" +
-                "        \"address\": \"梦想一号小店\",\n" +
-                "        \"remark\": \"six\",\n" +
-                "        \"endDate\": \"2999-01-01\",\n" +
-                "        \"accountAmount\": \"10000.33\",\n" +
-                "        \"status\": \"1\"\n" +
-                "    },{\n" +
-                "        \"username\": \"小xx-1号\",\n" +
-                "        \"mobile\": \"12333333309\",\n" +
-                "        \"address\": \"梦想一号小店\",\n" +
-                "        \"remark\": \"seven\",\n" +
-                "        \"endDate\": \"2999-01-01\",\n" +
-                "        \"accountAmount\": \"10000.33\",\n" +
-                "        \"status\": \"1\"\n" +
-                "    },{\n" +
-                "        \"username\": \"小xx-1号\",\n" +
-                "        \"mobile\": \"12333333309\",\n" +
-                "        \"address\": \"梦想一号小店\",\n" +
-                "        \"remark\": \"eight\",\n" +
-                "        \"endDate\": \"2999-01-01\",\n" +
-                "        \"accountAmount\": \"10000.33\",\n" +
-                "        \"status\": \"1\"\n" +
-                "    },{\n" +
-                "        \"username\": \"小xx-1号\",\n" +
-                "        \"mobile\": \"12333333309\",\n" +
-                "        \"address\": \"梦想一号小店\",\n" +
-                "        \"remark\": \"nine\",\n" +
-                "        \"endDate\": \"2999-01-01\",\n" +
-                "        \"accountAmount\": \"10000.33\",\n" +
-                "        \"status\": \"1\"\n" +
-                "    },{\n" +
-                "        \"username\": \"小xx-1号\",\n" +
-                "        \"mobile\": \"12333333309\",\n" +
-                "        \"address\": \"梦想一号小店\",\n" +
-                "        \"remark\": \"ten\",\n" +
-                "        \"endDate\": \"2999-01-01\",\n" +
-                "        \"accountAmount\": \"10000.33\",\n" +
-                "        \"status\": \"1\"\n" +
-                "    },{\n" +
-                "        \"username\": \"小xx-1号\",\n" +
-                "        \"mobile\": \"12333333309\",\n" +
-                "        \"address\": \"梦想一号小店\",\n" +
-                "        \"remark\": \"eleven\",\n" +
-                "        \"endDate\": \"2999-01-01\",\n" +
-                "        \"accountAmount\": \"10000.33\",\n" +
-                "        \"status\": \"1\"\n" +
-                "    },{\n" +
-                "        \"username\": \"小xx-1号\",\n" +
-                "        \"mobile\": \"12333333309\",\n" +
-                "        \"address\": \"梦想一号小店\",\n" +
-                "        \"remark\": \"third\",\n" +
-                "        \"endDate\": \"2999-01-01\",\n" +
-                "        \"accountAmount\": \"10000.33\",\n" +
-                "        \"status\": \"1\"\n" +
-                "    },{\n" +
-                "        \"username\": \"小xx-1号\",\n" +
-                "        \"mobile\": \"12333333309\",\n" +
-                "        \"address\": \"梦想一号小店\",\n" +
-                "        \"remark\": \"third2\",\n" +
-                "        \"endDate\": \"2999-01-01\",\n" +
-                "        \"accountAmount\": \"10000.33\",\n" +
-                "        \"status\": \"1\"\n" +
-                "    },{\n" +
-                "        \"username\": \"小xx-1号\",\n" +
-                "        \"mobile\": \"12333333309\",\n" +
-                "        \"address\": \"梦想一号小店\",\n" +
-                "        \"remark\": \"four2\",\n" +
-                "        \"endDate\": \"2999-01-01\",\n" +
-                "        \"accountAmount\": \"10000.33\",\n" +
-                "        \"status\": \"1\"\n" +
-                "    },{\n" +
-                "        \"username\": \"小xx-1号\",\n" +
-                "        \"mobile\": \"12333333309\",\n" +
-                "        \"address\": \"梦想一号小店\",\n" +
-                "        \"remark\": \"four3\",\n" +
-                "        \"endDate\": \"2999-01-01\",\n" +
-                "        \"accountAmount\": \"10000.33\",\n" +
-                "        \"status\": \"1\"\n" +
-                "    },{\n" +
-                "        \"username\": \"小xx-1号\",\n" +
-                "        \"mobile\": \"12333333309\",\n" +
-                "        \"address\": \"梦想一号小店\",\n" +
-                "        \"remark\": \"four5\",\n" +
-                "        \"endDate\": \"2999-01-01\",\n" +
-                "        \"accountAmount\": \"10000.33\",\n" +
-                "        \"status\": \"1\"\n" +
-                "    },{\n" +
-                "        \"username\": \"小xx-1号\",\n" +
-                "        \"mobile\": \"12333333309\",\n" +
-                "        \"address\": \"梦想一号小店\",\n" +
-                "        \"remark\": \"five1\",\n" +
-                "        \"endDate\": \"2999-01-01\",\n" +
-                "        \"accountAmount\": \"10000.33\",\n" +
-                "        \"status\": \"1\"\n" +
-                "    },{\n" +
-                "        \"username\": \"小xx-1号\",\n" +
-                "        \"mobile\": \"12333333309\",\n" +
-                "        \"address\": \"梦想一号小店\",\n" +
-                "        \"remark\": \"five2\",\n" +
-                "        \"endDate\": \"2999-01-01\",\n" +
-                "        \"accountAmount\": \"10000.33\",\n" +
-                "        \"status\": \"1\"\n" +
-                "    },{\n" +
-                "        \"username\": \"小xx-1号\",\n" +
-                "        \"mobile\": \"12333333309\",\n" +
-                "        \"address\": \"梦想一号小店\",\n" +
-                "        \"remark\": \"我不知道写什么\",\n" +
-                "        \"endDate\": \"2999-01-01\",\n" +
-                "        \"accountAmount\": \"10000.33\",\n" +
-                "        \"status\": \"1\"\n" +
-                "    },{\n" +
-                "        \"username\": \"小xx-1号\",\n" +
-                "        \"mobile\": \"12333333309\",\n" +
-                "        \"address\": \"梦想一号小店\",\n" +
-                "        \"remark\": \"我不知道写什么\",\n" +
-                "        \"endDate\": \"2999-01-01\",\n" +
-                "        \"accountAmount\": \"10000.33\",\n" +
-                "        \"status\": \"1\"\n" +
-                "    },{\n" +
-                "        \"username\": \"小xx-1号\",\n" +
-                "        \"mobile\": \"12333333309\",\n" +
-                "        \"address\": \"梦想一号小店\",\n" +
-                "        \"remark\": \"我不知道写什么\",\n" +
-                "        \"endDate\": \"2999-01-01\",\n" +
-                "        \"accountAmount\": \"10000.33\",\n" +
-                "        \"status\": \"1\"\n" +
-                "    }\n" +
-                "]";
-        List<AccountBooksVO> accountBooksVOS = JSON.parseObject(exampleJson, new TypeReference<List<AccountBooksVO>>() {
-        });
-        List<AccountBooksVO> tmpList = new ArrayList<>(accountBooksVOS);
-        for (int i = 0; i < 6; i++) {
-            for (AccountBooksVO accountBooksVO : tmpList) {
-                //模拟条件搜索
-                AccountBooksVO accountBooksVO1 = new AccountBooksVO();
-                BeanUtils.copyProperties(accountBooksVO, accountBooksVO1);
-                accountBooksVOS.add(accountBooksVO1);
-            }
-        }
+        AtomicInteger g = new AtomicInteger(0);
+        List<AccountBooksVO> accountBooksVOS =  copyExampleList(g);
         if(StringUtils.isNotBlank(bo.getRemark()) || StringUtils.isNotBlank(bo.getMobile()) || StringUtils.isNotBlank(bo.getUsername())){
             accountBooksVOS = accountBooksVOS.stream().filter(accountBooksVO ->
                     (StringUtils.isNotBlank(bo.getMobile()) && accountBooksVO.getMobile().contains(bo.getMobile()))
@@ -213,14 +33,8 @@ public class AccountBooksServiceImpl implements AccountBooksService {
                 ).collect(Collectors.toList());
         }
         BigDecimal totalAmount = BigDecimal.ZERO;
-        int count = 1;
         for (AccountBooksVO accountBooksVO : accountBooksVOS) {
-            accountBooksVO.setId(count++);
-            accountBooksVO.setUserId(count);
-            accountBooksVO.setArea("北京市/北京市/东城区");
-            accountBooksVO.setAreaDetail("我不知道这个是什么地方，记录一下");
-            accountBooksVO.setCreateDate(DateFormatUtils.format(new Date(), "yyyy-MM-dd"));
-            totalAmount = totalAmount.add(accountBooksVO.getAccountAmount());
+            totalAmount = totalAmount.add(accountBooksVO.getTotalAmount());
         }
         int i = bo.getPageNum() * bo.getPageSize();
         int i1 = (bo.getPageNum() - 1) * bo.getPageSize();
@@ -231,5 +45,103 @@ public class AccountBooksServiceImpl implements AccountBooksService {
         AccountBooksPageVO page = new AccountBooksPageVO(bo.getPageNum(), bo.getPageSize(), accountBooksVOS.size(), booksVOList);
         page.setTotalAmount(totalAmount);
         return page;
+    }
+
+    /**
+     * 拷贝数据
+     * @param i
+     * @return
+     */
+    private List<AccountBooksVO> copyExampleList(AtomicInteger i) {
+        List<AccountBooksVO> accountBooksVOS = originExampleList(i);
+        List<AccountBooksVO> booksVOS = new ArrayList<>();
+        for (int j = 0; j < 30; j++) {
+            for (AccountBooksVO accountBooksVO : accountBooksVOS) {
+                AccountBooksVO accountBooksVO1 = new AccountBooksVO();
+                BeanUtils.copyProperties(accountBooksVO,accountBooksVO1);
+                accountBooksVO.setId(nextId(i));
+                booksVOS.add(accountBooksVO1);
+            }
+        }
+        return booksVOS;
+    }
+
+    /**
+     * 示例数据
+     * @param i
+     * @return
+     */
+    private List<AccountBooksVO> originExampleList(AtomicInteger i) {
+        List<AccountBooksVO> accountBooksVOS = new ArrayList<>();
+        // 未结清
+        AccountBooksVO booksVO = new AccountBooksVO();
+        booksVO.setArea("北京市/北京市/东城区");
+        booksVO.setAreaDetail("朝阳街道天街大花园北路自来熟小区99幢105号");
+        booksVO.setCreateDate(DateFormatUtils.format(new Date(),"yyyy-MM-dd"));
+        booksVO.setId(nextId(i));
+        booksVO.setUserId(booksVO.getId());
+        booksVO.setUsername("小花");
+        booksVO.setMobile("18888888999");
+        booksVO.setTotalAmount(new BigDecimal(30000));
+        booksVO.setPayAmount(new BigDecimal(10000));
+        booksVO.setRemark("我不知道这个地址所以我随便造了个地址，虚拟地址请不要相信");
+        booksVO.setStatus(booksVO.getTotalAmount().subtract(booksVO.getPayAmount()).compareTo(BigDecimal.ZERO) > 0 ? 1 : 2);
+        booksVO.setBookType(1);
+        booksVO.setBookTypeDesc("批发");
+
+        AccountBooksVO.BookDetail bookDetail = new AccountBooksVO.BookDetail();
+        bookDetail.setId(nextId(i));
+        bookDetail.setAmount(new BigDecimal(12000));
+        bookDetail.setWeight(new BigDecimal(1000));
+        bookDetail.setName("土豆");
+
+        AccountBooksVO.BookDetail bookDetail1 = new AccountBooksVO.BookDetail();
+        bookDetail1.setId(nextId(i));
+        bookDetail1.setAmount(new BigDecimal(15000));
+        bookDetail1.setWeight(new BigDecimal(1100));
+        bookDetail1.setName("西红柿");
+
+        AccountBooksVO.BookDetail bookDetail2 = new AccountBooksVO.BookDetail();
+        bookDetail2.setId(nextId(i));
+        bookDetail2.setAmount(new BigDecimal(13000));
+        bookDetail2.setWeight(new BigDecimal(1200));
+        bookDetail2.setName("茄子");
+        List<AccountBooksVO.BookDetail> bookDetails = Arrays.asList(bookDetail, bookDetail1, bookDetail2);
+        booksVO.setDetails(bookDetails);
+        // 已结清：有人员信息
+        AccountBooksVO vo = new AccountBooksVO();
+        BeanUtils.copyProperties(booksVO, vo);
+        vo.setId(nextId(i));
+        vo.setUserId(vo.getId());
+        vo.setPayAmount(new BigDecimal(300000));
+        vo.setRemark(vo.getRemark() + "有人员");
+        vo.setMobile("18866666669");
+        vo.setUsername("小乐");
+        vo.setStatus(vo.getTotalAmount().subtract(vo.getPayAmount()).compareTo(BigDecimal.ZERO) > 0 ? 1 : 2);
+        vo.setBookType(1);
+        vo.setBookTypeDesc("批发");
+        // 已结清：无人员信息
+        AccountBooksVO vo1 = new AccountBooksVO();
+        BeanUtils.copyProperties(booksVO, vo1);
+        vo1.setId(nextId(i));
+        vo1.setPayAmount(new BigDecimal(300000));
+        vo1.setRemark(vo.getRemark() + "无人员");
+        vo1.setUserId(null);
+        vo1.setMobile(null);
+        vo1.setUsername(null);
+        vo1.setStatus(vo1.getTotalAmount().subtract(vo1.getPayAmount()).compareTo(BigDecimal.ZERO) > 0 ? 1 : 2);
+        vo1.setBookType(1);
+        vo1.setBookTypeDesc("批发");
+
+        accountBooksVOS.add(booksVO);
+        accountBooksVOS.add(vo);
+        accountBooksVOS.add(vo1);
+
+        return accountBooksVOS;
+    }
+
+
+    public static int nextId(AtomicInteger i){
+        return i.incrementAndGet();
     }
 }

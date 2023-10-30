@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -36,33 +35,33 @@ public class AccountUserController {
         List<AccountUserVO> users = new ArrayList<>();
         AccountUserVO userVO = new AccountUserVO();
         userVO.setUserId(1);
-        userVO.setUsername("小红帽");
+        userVO.setUsername("小花");
         userVO.setArea("北京市/北京市/东城区");
-        userVO.setAreaDetail("我不知道这个是什么地方，记录一下");
+        userVO.setAreaDetail("我不知道这个是什么地方，记录一下111");
         userVO.setCreateDate(DateFormatUtils.format(new Date(),"yyyy-MM-dd HH:mm:ss"));
         userVO.setStatus(UserStatusEnum.ENABLE.getDesc());
         userVO.setRemark("灰太狼在哪里");
-        userVO.setMobile("9999999999");
+        userVO.setMobile("18888888999");
 
         AccountUserVO userVO1 = new AccountUserVO();
         userVO1.setUserId(2);
-        userVO1.setUsername("小地瓜");
+        userVO1.setUsername("小乐");
         userVO1.setArea("北京市/北京市/东城区");
         userVO1.setAreaDetail("我不知道这个是什么地方，记录一下222");
         userVO1.setCreateDate(DateFormatUtils.format(new Date(),"yyyy-MM-dd HH:mm:ss"));
         userVO1.setStatus(UserStatusEnum.ENABLE.getDesc());
         userVO1.setRemark("大西瓜在哪里");
-        userVO1.setMobile("000000000");
+        userVO1.setMobile("18866666669");
 
         AccountUserVO userVO2 = new AccountUserVO();
         userVO2.setUserId(3);
         userVO2.setUsername("小地瓜");
         userVO2.setArea("北京市/北京市/东城区");
-        userVO2.setAreaDetail("我不知道这个是什么地方，记录一下222");
+        userVO2.setAreaDetail("我不知道这个是什么地方，记录一下333");
         userVO2.setCreateDate(DateFormatUtils.format(new Date(),"yyyy-MM-dd HH:mm:ss"));
         userVO2.setStatus(UserStatusEnum.ENABLE.getDesc());
         userVO2.setRemark("大西瓜在哪里");
-        userVO2.setMobile("000000000");
+        userVO2.setMobile("18866666668");
         users.add(userVO);users.add(userVO1);users.add(userVO2);
         for (int i = 0; i < 20; i++) {
             AccountUserVO userVO3 = new AccountUserVO();
