@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zytd.account.books.dao.UserManageMapper">
+
+
+        <!-- 通用查询映射结果 -->
+        <resultMap id="BaseResultMap" type="com.zytd.account.books.model.UserManage">
+                    <id column="id" property="id" />
+                <result column="member_id" property="memberId" />
+                <result column="name" property="name" />
+                <result column="phone" property="phone" />
+                <result column="province_code" property="provinceCode" />
+                <result column="province_name" property="provinceName" />
+                <result column="city_code" property="cityCode" />
+                <result column="city_name" property="cityName" />
+                <result column="district_code" property="districtCode" />
+                <result column="district_name" property="districtName" />
+                <result column="street_code" property="streetCode" />
+                <result column="street_name" property="streetName" />
+                <result column="address" property="address" />
+                <result column="remark" property="remark" />
+                <result column="serial_num" property="serialNum" />
+                <result column="type" property="type" />
+                <result column="deleted" property="deleted" />
+                <result column="creat_time" property="creatTime" />
+                <result column="update_time" property="updateTime" />
+        </resultMap>
+
+        <!-- 通用查询结果列 -->
+        <sql id="Base_Column_List">
+                id, member_id, name, phone, province_code, province_name, city_code, city_name, district_code, district_name, street_code, street_name, address, remark, serial_num, type, deleted, creat_time, update_time
+        </sql>
+
+</mapper>

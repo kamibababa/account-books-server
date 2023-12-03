@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zytd.account.books.dao.IncomeOrderMapper">
+        <!-- 通用查询映射结果 -->
+        <resultMap id="BaseResultMap" type="com.zytd.account.books.model.IncomeOrder">
+                    <id column="id" property="id" />
+                <result column="member_id" property="memberId" />
+                <result column="user_id" property="userId" />
+                <result column="type" property="type" />
+                <result column="day" property="day" />
+                <result column="total_money" property="totalMoney" />
+                <result column="paid_money" property="paidMoney" />
+                <result column="unpaid_money" property="unpaidMoney" />
+                <result column="status" property="status" />
+                <result column="remark" property="remark" />
+                <result column="deleted" property="deleted" />
+                <result column="creat_time" property="creatTime" />
+                <result column="update_time" property="updateTime" />
+        </resultMap>
+
+        <!-- 通用查询结果列 -->
+        <sql id="Base_Column_List">
+                id, member_id, user_id, type, day, total_money, paid_money, unpaid_money, status, remark, deleted, creat_time, update_time
+        </sql>
+
+        <select id="page" resultType="com.zytd.account.books.vo.income.IncomeOrderPageVO">
+                select io.id incomeOrderId, io.type, um.name userName, io.total_money totalMoney, io.unpaid_money unpaidMoney, io.day, io.status
+                from income_order io
+                left join user_manage um on io.user_id = um.id
+                where io.deleted = 0 and io.day between #{startTime} and #{endTime}
+                <if test="param.orderType != null">
+                        and io.type = #{param.orderType}
+                </if>
+                <if test="param.status != null">
+                        and io.status = #{param.status}
+                </if>
+                <if test="param.name != null">
+                        and um.name like concat('%', #{param.name}, '%')
+                </if>
+        </select>
+
+        <select id="getSumByTime" resultType="com.zytd.account.books.vo.income.IncomeVO">
+                select sum(io.paid_money) totalIncome, sum(io.unpaid_money) totalExpenditure, sum(eo.total_money) totalUnpaidMoney
+                from income_order io
+                left join expenditure_order eo on 1=1
+                where io.deleted = 0 and io.day between #{startTime} and #{endTime} and eo.deleted = 0 and eo.day between #{startTime} and #{endTime}
+        </select>
+</mapper>

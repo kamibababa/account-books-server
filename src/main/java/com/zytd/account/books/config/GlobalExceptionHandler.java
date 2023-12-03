@@ -2,7 +2,7 @@ package com.zytd.account.books.config;
 
 
 import com.zytd.account.books.common.base.BizException;
-import com.zytd.account.books.common.base.Result;
+import com.zytd.account.books.common.base.ResultVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -14,15 +14,15 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(value = BizException.class)
     @ResponseBody
-    public Result<String> bizException(BizException e){
+    public ResultVO<String> bizException(BizException e){
         log.error("业务异常",e);
-        return Result.error(e.getMsg(),e.getCode());
+        return ResultVO.error(e.getMsg(),e.getCode());
     }
 
     @ExceptionHandler(value = Exception.class)
     @ResponseBody
-    public Result<String> exception(Exception e){
+    public ResultVO<String> exception(Exception e){
         log.error("服务异常",e);
-        return Result.error(e.getMessage());
+        return ResultVO.error(e.getMessage());
     }
 }

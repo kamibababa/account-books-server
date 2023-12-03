@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zytd.account.books.dao.ExpenditureOrderMapper">
+        <!-- 通用查询映射结果 -->
+        <resultMap id="BaseResultMap" type="com.zytd.account.books.model.ExpenditureOrder">
+                    <id column="id" property="id" />
+                <result column="member_id" property="memberId" />
+                <result column="user_id" property="userId" />
+                <result column="type" property="type" />
+                <result column="day" property="day" />
+                <result column="product_type_id" property="productTypeId" />
+                <result column="weight" property="weight" />
+                <result column="unit_price" property="unitPrice" />
+                <result column="money" property="money" />
+                <result column="transport_money" property="transportMoney" />
+                <result column="other_money" property="otherMoney" />
+                <result column="total_money" property="totalMoney" />
+                <result column="remark" property="remark" />
+                <result column="deleted" property="deleted" />
+                <result column="creat_time" property="creatTime" />
+                <result column="update_time" property="updateTime" />
+        </resultMap>
+
+        <!-- 通用查询结果列 -->
+        <sql id="Base_Column_List">
+                id, member_id, user_id, type, day, product_type_id, weight, unit_price, money, transport_money, other_money, total_money, remark, deleted, creat_time, update_time
+        </sql>
+
+        <select id="page" resultType="com.zytd.account.books.vo.expenditure.ExpenditureOrderPageVO">
+                select eo.id expenditureOrderId, um.name userName, eo.type, pt.type productType, eo.total_money totalMoney, eo.weight, eo.day
+                from expenditure_order eo
+                left join user_manage um on um.id = eo.user_id
+                left join product_type pt on pt.id = eo.product_type_id
+        </select>
+</mapper>
