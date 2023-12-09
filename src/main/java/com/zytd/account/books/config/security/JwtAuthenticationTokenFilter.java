@@ -1,4 +1,4 @@
-package com.zytd.account.books.config;
+package com.zytd.account.books.config.security;
 
 import com.zytd.account.books.common.base.LoginUserDetails;
 import com.zytd.account.books.common.base.MemberInfoVO;

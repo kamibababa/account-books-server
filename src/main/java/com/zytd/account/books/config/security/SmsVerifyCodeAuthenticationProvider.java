@@ -9,6 +9,7 @@ import com.zytd.account.books.common.base.TokenVO;
 import com.zytd.account.books.common.constants.CommonConstants;
 import com.zytd.account.books.common.utils.JwtTokenUtil;
 import com.zytd.account.books.vo.member.MemberVO;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -38,12 +39,8 @@ public class SmsVerifyCodeAuthenticationProvider implements AuthenticationProvid
 	// ~ Static fields/initializers
 	// =====================================================================================
 
-	/**
-	 * The plaintext password used to perform
-	 * PasswordEncoder#matches(CharSequence, String)}  on when the user is
-	 * not found to avoid SEC-2056.
-	 */
-	private static final String USER_NOT_FOUND_VERIFY_CODE = "userNotFoundVerifyCode";
+	private static final String USE_NOT_FOUND = "手机号错误";
+	private static final String USER_NOT_FOUND_VERIFY_CODE = "验证码错误";
 
 	private UserDetailsService userDetailsService;
 
@@ -72,10 +69,10 @@ public class SmsVerifyCodeAuthenticationProvider implements AuthenticationProvid
 	private void doAuthenticate(SmsVerifyCodeAuthenticationToken token) {
 		LoginUserDetails userDetails = (LoginUserDetails)getUserDetailsService().loadUserByUsername(token.getPrincipal().toString());
 		if(userDetails == null){
-			throw new UsernameNotFoundException("用户名或密码错误");
+			throw new UsernameNotFoundException(USE_NOT_FOUND);
 		}
 		String verifyCode = userDetails.getPassword();
-		if(!token.getCredentials().toString().equals(verifyCode)){
+		if(StringUtils.isBlank(verifyCode) || !token.getCredentials().toString().equals(verifyCode)){
 			throw new BadCredentialsException(USER_NOT_FOUND_VERIFY_CODE);
 		}
 		// 设置用户信息用于后续操作
