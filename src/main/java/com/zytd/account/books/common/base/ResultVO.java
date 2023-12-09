@@ -21,7 +21,7 @@ public class ResultVO<T> {
         this.msg = ResponseCodeEnum.SUCCESS.getDesc();
     }
 
-    public ResultVO(T data, ResponseCodeEnum response){
+    public ResultVO(ResponseCodeEnum response,T data){
         AssertUtils.assertTrue(Objects.nonNull(response),"响应码为空");
         this.data = data;
         this.code = response.getCode();

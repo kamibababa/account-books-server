@@ -24,6 +24,11 @@ public interface MemberExtendService {
     ResultVO<MemberVO> loginByVerifyCode(@RequestBody LoginParam param);
 
     /**
+     * 获取验证码
+     */
+    ResultVO<String> getVerifyCode(String phone);
+
+    /**
      * 查看会员详情
      */
     ResultVO<MemberVO> detail();

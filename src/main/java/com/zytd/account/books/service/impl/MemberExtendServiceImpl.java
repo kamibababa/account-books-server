@@ -2,15 +2,16 @@ package com.zytd.account.books.service.impl;
 
 import com.zytd.account.books.common.base.*;
 import com.zytd.account.books.common.constants.CommonConstants;
-import com.zytd.account.books.common.utils.JwtTokenUtil;
-import com.zytd.account.books.common.utils.RedisUtil;
-import com.zytd.account.books.common.utils.ThreadLocalUtil;
+import com.zytd.account.books.common.utils.*;
+import com.zytd.account.books.enums.VerificationCodeTypeEnum;
 import com.zytd.account.books.model.Member;
+import com.zytd.account.books.model.MemberVerificationCode;
 import com.zytd.account.books.param.member.LoginByPasswordParam;
 import com.zytd.account.books.param.member.LoginParam;
 import com.zytd.account.books.param.member.RegisterParam;
 import com.zytd.account.books.service.MemberExtendService;
 import com.zytd.account.books.service.MemberService;
+import com.zytd.account.books.service.MemberVerificationCodeService;
 import com.zytd.account.books.vo.member.MemberVO;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -20,6 +21,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.util.Date;
 import java.util.Objects;
@@ -31,7 +33,10 @@ public class MemberExtendServiceImpl implements MemberExtendService {
     private final MemberService memberService;
     private final JwtTokenUtil jwtTokenUtil;
     private final AuthenticationManager authenticationManager;
-    private final RedisUtil redisUtil;
+    private final CacheUtil cacheUtil;
+
+    @Autowired
+    private MemberVerificationCodeService memberVerificationCodeService;
 
     /**
      * 注册并登录
@@ -88,8 +93,26 @@ public class MemberExtendServiceImpl implements MemberExtendService {
         BeanUtils.copyProperties(user.getMember(), memberVO);
         memberVO.setMemberId(user.getMember().getId());
         memberVO.setToken(tokenVO.getToken());
-        redisUtil.setValue(CommonConstants.token_prefix + memberVO.getMemberId(), memberVO.getToken());
+        cacheUtil.setValue(CommonConstants.token_prefix + memberVO.getMemberId(), memberVO.getToken());
         return ResultVO.success(memberVO);
+    }
+
+    /**
+     * 生成并返回验证码登录
+     */
+    @Override
+    public ResultVO<String> getVerifyCode(String phone) {
+        AssertUtils.assertTrue(!StringUtils.isEmpty(phone),"手机号不能为空");
+        // 1 生成验证码
+        // 2 发送短信
+        // 3 存储验证码
+        // 4 返回验证码
+        MemberVerificationCode verificationCode = memberVerificationCodeService.selectByPhoneAndType(phone, VerificationCodeTypeEnum.login.getCode());
+        if(verificationCode != null){
+            return ResultVO.success(verificationCode.getVerificationCode());
+        }
+        // 测试数据
+        return ResultVO.success("test666");
     }
 
     /**
@@ -111,7 +134,7 @@ public class MemberExtendServiceImpl implements MemberExtendService {
     @Override
     public ResultVO<Integer> logout() {
         //移除token
-        redisUtil.deleteValue(CommonConstants.token_prefix + ThreadLocalUtil.MEMBER_ID_HOLDER.get());
+        cacheUtil.deleteValue(CommonConstants.token_prefix + ThreadLocalUtil.MEMBER_ID_HOLDER.get());
         return ResultVO.success();
     }
 }

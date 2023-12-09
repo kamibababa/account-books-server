@@ -47,6 +47,12 @@ public class MemberController {
         return memberExtendService.loginByVerifyCode(param);
     }
 
+    @ApiOperation("获取验证码")
+    @PostMapping("getVerifyCode")
+    public ResultVO<String> getVerifyCode(@RequestBody LoginParam param){
+        return memberExtendService.getVerifyCode(param.getPhone());
+    }
+
     @ApiOperation("查看会员详情")
     @PostMapping("detail")
     public ResultVO<MemberVO> detail(){

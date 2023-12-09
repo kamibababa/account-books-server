@@ -1,7 +1,14 @@
 package com.zytd.account.books.config;
 
+import com.zytd.account.books.common.utils.CacheUtil;
+import com.zytd.account.books.common.utils.JwtTokenUtil;
+import com.zytd.account.books.config.security.AuthenticationEntryPointHandler;
+import com.zytd.account.books.config.security.CustomAuthenticationFailureHandler;
+import com.zytd.account.books.config.security.CustomAuthenticationSuccessHandler;
+import com.zytd.account.books.config.security.SmsVerifyCodeAuthenticationSecurityConfig;
 import com.zytd.account.books.service.impl.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -24,6 +31,16 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
     private UserDetailsServiceImpl userDetailsService;
     @Autowired
     private JwtAuthenticationTokenFilter jwtAuthenticationTokenFilter;
+    @Autowired
+    private SmsVerifyCodeAuthenticationSecurityConfig smsVerifyCodeAuthenticationSecurityConfig;
+    @Autowired
+    private JwtTokenUtil jwtTokenUtil;
+    @Autowired
+    private CacheUtil cacheUtil;
+    @Value("${spring.session.timeout:1800}")
+    private Integer timeOut;
+    @Autowired
+    private AuthenticationEntryPointHandler authenticationEntryPointHandler;
 
     @Bean
     @Override
@@ -32,7 +49,7 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Bean
-    public PasswordEncoder passwordEncoder(){
+    public PasswordEncoder passwordEncoder() {
         return new VerificationCodePasswordEncoder();
     }
 
@@ -60,14 +77,25 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 //                .loginPage("/login.html")   //自定义登录界面
 //                .loginProcessingUrl("/login")   //调用的登录接口
 //                .successForwardUrl("/toMain");   //跳转到自定义登录成功界面，需要是post请求
+        // 登录处理相关
+        http.formLogin()
+                // 登录成功或失败
+                .successHandler(new CustomAuthenticationSuccessHandler(jwtTokenUtil,cacheUtil,timeOut))
+                .failureHandler(new CustomAuthenticationFailureHandler())
+                .and()
+                .apply(smsVerifyCodeAuthenticationSecurityConfig)
+                .and()
+                // session失效
+                .exceptionHandling()
+                .authenticationEntryPoint(authenticationEntryPointHandler);
 
         http.csrf().disable()   //关闭防火墙
-                .addFilterBefore(jwtAuthenticationTokenFilter, UsernamePasswordAuthenticationFilter.class)
+                .addFilterAfter(jwtAuthenticationTokenFilter, UsernamePasswordAuthenticationFilter.class)
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
                 .antMatchers("/swagger-ui/*").permitAll()
-                .antMatchers("/member/loginByVerifyCode").permitAll()  //放过不认证该接口
+                .antMatchers("/member/getVerifyCode").permitAll()  //放过不认证该接口
                 .anyRequest().authenticated();  //其他所有接口都要认证
         super.configure(http);
     }

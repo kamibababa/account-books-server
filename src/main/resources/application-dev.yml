@@ -5,6 +5,9 @@ spring:
     username: root
     password: mtwlc123
     type: com.alibaba.druid.pool.DruidDataSource
+  ## session过期时间
+  session:
+    timeout: 30
 mybatis-plus:
   configuration:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
@@ -20,6 +23,10 @@ jwt:
   secret: yz-admin-secret #JWT加解密使用的密钥
   expiration: 604800 #JWT的超期限时间秒(60*60*24*7)
 
+# 缓存配置
+#cache:
+  ## 默认使用本地缓存，支持redis
+#  enable: redis
 redis:
   ip: 60.204.171.249
   port: 6379

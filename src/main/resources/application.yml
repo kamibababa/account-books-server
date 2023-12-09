@@ -1,5 +1,7 @@
 server:
   port: 8888
+  servlet:
+    context-path: /accountbooks
 
 spring:
   application:
@@ -8,3 +10,5 @@ spring:
     active:
       - dev
       - swagger
+
+
