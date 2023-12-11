@@ -28,7 +28,7 @@ jwt:
   ## 默认使用本地缓存，支持redis
 #  enable: redis
 redis:
-  ip: 60.204.171.249
+  ip: localhost
   port: 6379
   password: mtwlc2023
 
