@@ -80,9 +80,10 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
                 .successHandler(new CustomAuthenticationSuccessHandler(jwtTokenUtil,cacheUtil,timeOut))
                 .failureHandler(new CustomAuthenticationFailureHandler())
                 .and()
+                // 短信验证码登录配置
                 .apply(smsVerifyCodeAuthenticationSecurityConfig)
                 .and()
-                // session失效
+                // 登录认证失效
                 .exceptionHandling()
                 .authenticationEntryPoint(authenticationEntryPointHandler);
 

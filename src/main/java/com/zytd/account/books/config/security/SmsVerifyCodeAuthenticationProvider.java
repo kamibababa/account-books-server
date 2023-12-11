@@ -56,6 +56,7 @@ public class SmsVerifyCodeAuthenticationProvider implements AuthenticationProvid
 
 	@Override
 	public Authentication authenticate(Authentication authentication) throws AuthenticationException {
+		authentication.getDetails();
 		if (!supports(authentication.getClass())) {
 			return null;
 		}
@@ -75,7 +76,7 @@ public class SmsVerifyCodeAuthenticationProvider implements AuthenticationProvid
 		if(StringUtils.isBlank(verifyCode) || !token.getCredentials().toString().equals(verifyCode)){
 			throw new BadCredentialsException(USER_NOT_FOUND_VERIFY_CODE);
 		}
-		// 设置用户信息用于后续操作
+		// 设置用户信息登录成功后用于保存并生成token
 		token.setDetails(userDetails);
 	}
 

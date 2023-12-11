@@ -25,7 +25,7 @@ public class SmsVerifyCodeAuthenticationSecurityConfig extends SecurityConfigure
     private Integer timeOut;
 
     @Override
-    public void configure(HttpSecurity http) throws Exception {
+    public void configure(HttpSecurity http) {
         //自定义SmsVerifyCodeAuthenticationFilter过滤器
         SmsVerifyCodeAuthenticationFilter smsVerifyCodeAuthenticationFilter = new SmsVerifyCodeAuthenticationFilter();
         smsVerifyCodeAuthenticationFilter.setAuthenticationManager(http.getSharedObject(AuthenticationManager.class));

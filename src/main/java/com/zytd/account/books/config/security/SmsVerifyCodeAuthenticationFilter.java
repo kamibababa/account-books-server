@@ -7,13 +7,14 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.zytd.account.books.common.base.BizException;
 import org.springframework.security.authentication.AuthenticationServiceException;
+import org.springframework.security.authentication.InternalAuthenticationServiceException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.util.Assert;
 
-import javax.servlet.ServletInputStream;
+import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.ByteArrayOutputStream;
@@ -53,7 +54,7 @@ public class SmsVerifyCodeAuthenticationFilter extends
 	// ===================================================================================================
 
 	public SmsVerifyCodeAuthenticationFilter() {
-		super(new AntPathRequestMatcher("/login", "POST"));
+		super(new AntPathRequestMatcher("/login/sms", "POST"));
 	}
 
 	// ~ Methods
@@ -65,10 +66,8 @@ public class SmsVerifyCodeAuthenticationFilter extends
 			throw new AuthenticationServiceException(
 					"Authentication method not supported: " + request.getMethod());
 		}
-
 		String username = obtainUsername(request);
 		String verifyCode = obtainVerifyCode(request);
-
 		if (username == null) {
 			username = "";
 		}
