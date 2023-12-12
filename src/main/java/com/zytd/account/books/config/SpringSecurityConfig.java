@@ -1,11 +1,10 @@
 package com.zytd.account.books.config;
 
-import com.zytd.account.books.common.utils.CacheUtil;
-import com.zytd.account.books.common.utils.JwtTokenUtil;
 import com.zytd.account.books.config.security.*;
+import com.zytd.account.books.config.security.imagecode.ImageVerifyCodeAuthenticationSecurityConfig;
+import com.zytd.account.books.config.security.smscode.SmsVerifyCodeAuthenticationSecurityConfig;
 import com.zytd.account.books.service.impl.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -29,13 +28,13 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private JwtAuthenticationTokenFilter jwtAuthenticationTokenFilter;
     @Autowired
+    private CustomAuthenticationSuccessHandler customAuthenticationSuccessHandler;
+    @Autowired
+    private CustomAuthenticationFailureHandler customAuthenticationFailureHandler;
+    @Autowired
     private SmsVerifyCodeAuthenticationSecurityConfig smsVerifyCodeAuthenticationSecurityConfig;
     @Autowired
-    private JwtTokenUtil jwtTokenUtil;
-    @Autowired
-    private CacheUtil cacheUtil;
-    @Value("${spring.session.timeout:1800}")
-    private Integer timeOut;
+    private ImageVerifyCodeAuthenticationSecurityConfig imageVerifyCodeAuthenticationSecurityConfig;
     @Autowired
     private AuthenticationEntryPointHandler authenticationEntryPointHandler;
 
@@ -77,11 +76,14 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
         // 登录处理相关
         http.formLogin()
                 // 登录成功或失败
-                .successHandler(new CustomAuthenticationSuccessHandler(jwtTokenUtil,cacheUtil,timeOut))
-                .failureHandler(new CustomAuthenticationFailureHandler())
+                .successHandler(customAuthenticationSuccessHandler)
+                .failureHandler(customAuthenticationFailureHandler)
                 .and()
                 // 短信验证码登录配置
                 .apply(smsVerifyCodeAuthenticationSecurityConfig)
+                .and()
+                // 新增验证码登录
+                .apply(imageVerifyCodeAuthenticationSecurityConfig)
                 .and()
                 // 登录认证失效
                 .exceptionHandling()
@@ -93,6 +95,7 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .authorizeRequests()
                 .antMatchers("/swagger-ui/*").permitAll()
+                .antMatchers("/member/getImageCode").permitAll()
                 .antMatchers("/member/getVerifyCode").permitAll()  //放过不认证该接口
                 .anyRequest().authenticated();  //其他所有接口都要认证
         super.configure(http);

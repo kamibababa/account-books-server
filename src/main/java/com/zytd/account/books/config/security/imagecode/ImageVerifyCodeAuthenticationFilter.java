@@ -1,25 +1,17 @@
 
 
-package com.zytd.account.books.config.security;
+package com.zytd.account.books.config.security.imagecode;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
-import com.zytd.account.books.common.base.BizException;
 import org.springframework.security.authentication.AuthenticationServiceException;
-import org.springframework.security.authentication.InternalAuthenticationServiceException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.util.Assert;
 
-import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
 
 /**
  * Processes an authentication form submission. Called
@@ -38,23 +30,29 @@ import java.io.InputStream;
  * @author Luke Taylor
  * @since 3.0
  */
-public class SmsVerifyCodeAuthenticationFilter extends
+public class ImageVerifyCodeAuthenticationFilter extends
 		AbstractAuthenticationProcessingFilter {
 	// ~ Static fields/initializers
 	// =====================================================================================
 
 	public static final String SPRING_SECURITY_FORM_USERNAME_KEY = "username";
 	public static final String SPRING_SECURITY_FORM_VERIFY_CODE_KEY = "verifyCode";
+	public static final String SPRING_SECURITY_FORM_PASSWORD_KEY = "password";
 
 	private String usernameParameter = SPRING_SECURITY_FORM_USERNAME_KEY;
 	private String verifyCodeParameter = SPRING_SECURITY_FORM_VERIFY_CODE_KEY;
+	private String passwordParameter = SPRING_SECURITY_FORM_PASSWORD_KEY;
+
 	private boolean postOnly = true;
 
 	// ~ Constructors
 	// ===================================================================================================
 
-	public SmsVerifyCodeAuthenticationFilter() {
-		super(new AntPathRequestMatcher("/login/sms", "POST"));
+	public ImageVerifyCodeAuthenticationFilter() {
+		super(new AntPathRequestMatcher("/login/image/code", "POST"));
+		// 验证码校验通过后，继续后续校验（用户名和密码校验）
+		// provider定位是对所有filter生效，因此无需此设置
+//		super.setContinueChainBeforeSuccessfulAuthentication(Boolean.TRUE);
 	}
 
 	// ~ Methods
@@ -67,6 +65,7 @@ public class SmsVerifyCodeAuthenticationFilter extends
 					"Authentication method not supported: " + request.getMethod());
 		}
 		String username = obtainUsername(request);
+		String password = obtainPassword(request);
 		String verifyCode = obtainVerifyCode(request);
 		if (username == null) {
 			username = "";
@@ -78,10 +77,9 @@ public class SmsVerifyCodeAuthenticationFilter extends
 
 		username = username.trim();
 
-		SmsVerifyCodeAuthenticationToken authRequest = new SmsVerifyCodeAuthenticationToken(
-				username, verifyCode);
+		ImageVerifyCodeAuthenticationToken authRequest = new ImageVerifyCodeAuthenticationToken(
+				username, password,verifyCode);
 
-		// Allow subclasses to set the "details" property
 		setDetails(request, authRequest);
 
 		return this.getAuthenticationManager().authenticate(authRequest);
@@ -119,25 +117,9 @@ public class SmsVerifyCodeAuthenticationFilter extends
 		return request.getParameter(usernameParameter);
 	}
 
-	public static byte[] readInputStream(InputStream inStream) {
-		ByteArrayOutputStream outSteam = new ByteArrayOutputStream();
-		try {
-			byte[] buffer = new byte[1024];
-			int len;
-			while((len = inStream.read(buffer)) != -1) {
-				outSteam.write(buffer, 0, len);
-			}
-		} catch (Exception e){
-
-		}finally {
-			try {
-				outSteam.close();
-			} catch (IOException e) {
-			}
-		}
-		return outSteam.toByteArray();
+	protected String obtainPassword(HttpServletRequest request) {
+		return request.getParameter(passwordParameter);
 	}
-
 	/**
 	 * Provided so that subclasses may configure what is put into the authentication
 	 * request's details property.
@@ -147,7 +129,7 @@ public class SmsVerifyCodeAuthenticationFilter extends
 	 * set
 	 */
 	protected void setDetails(HttpServletRequest request,
-							  SmsVerifyCodeAuthenticationToken authRequest) {
+							  UsernamePasswordAuthenticationToken authRequest) {
 		authRequest.setDetails(authenticationDetailsSource.buildDetails(request));
 	}
 

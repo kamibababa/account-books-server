@@ -1,5 +1,5 @@
 
-package com.zytd.account.books.config.security;
+package com.zytd.account.books.config.security.smscode;
 
 import java.util.Collection;
 

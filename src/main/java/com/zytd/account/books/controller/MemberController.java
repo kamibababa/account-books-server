@@ -1,6 +1,11 @@
 package com.zytd.account.books.controller;
 
 
+import com.alibaba.fastjson.util.IOUtils;
+import com.google.code.kaptcha.Constants;
+import com.google.code.kaptcha.Producer;
+import com.google.code.kaptcha.impl.DefaultKaptcha;
+import com.mysql.cj.util.Base64Decoder;
 import com.zytd.account.books.common.base.ResultVO;
 import com.zytd.account.books.param.member.LoginParam;
 import com.zytd.account.books.service.MemberExtendService;
@@ -9,10 +14,18 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import sun.misc.BASE64Encoder;
+
+import javax.imageio.ImageIO;
+import javax.imageio.stream.ImageInputStream;
+import javax.servlet.ServletException;
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 
 /**
  * <p>
@@ -28,6 +41,7 @@ import org.springframework.web.bind.annotation.RestController;
 @AllArgsConstructor(onConstructor_ = {@Autowired})
 public class MemberController {
     private final MemberExtendService memberExtendService;
+    private final Producer producer;
 
 //    @ApiOperation("注册并登录")
 //    @PostMapping("register")
@@ -47,11 +61,33 @@ public class MemberController {
         return memberExtendService.loginByVerifyCode(param);
     }
 
-    @ApiOperation("获取验证码")
+    @ApiOperation("获取短信验证码")
     @PostMapping("getVerifyCode")
     public ResultVO<String> getVerifyCode(@RequestBody LoginParam param){
         return memberExtendService.getVerifyCode(param.getPhone());
     }
+
+    @ApiOperation("获取图片验证码")
+    @PostMapping("getImageCode")
+    public ResultVO<String> getCaptchaCode(HttpServletResponse response, HttpServletRequest request) throws IOException {
+        response.setHeader("Cache-Control", "no-store, no-cache");
+        response.setContentType("image/jpeg");
+        // 生成文字验证码
+        String text = producer.createText();
+        // 生成图片验证码
+        BufferedImage image = producer.createImage(text);
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        ImageIO.write(image, "jpg", out);
+        byte[] bytes = out.toByteArray();
+        BASE64Encoder base64Encoder = new BASE64Encoder();
+        String imageBase64 = base64Encoder.encodeBuffer(bytes).trim();
+        imageBase64 = imageBase64.replaceAll("\n", "").replaceAll("\r", "");
+        return ResultVO.success("data:image/jpg;base64," + imageBase64);
+
+    }
+
+
+
 
     @ApiOperation("查看会员详情")
     @PostMapping("detail")

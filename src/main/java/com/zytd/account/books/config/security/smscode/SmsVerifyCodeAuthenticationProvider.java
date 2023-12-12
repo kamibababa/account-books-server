@@ -1,32 +1,15 @@
 
 
-package com.zytd.account.books.config.security;
+package com.zytd.account.books.config.security.smscode;
 
 import com.zytd.account.books.common.base.LoginUserDetails;
-import com.zytd.account.books.common.base.MemberInfoVO;
-import com.zytd.account.books.common.base.ResultVO;
-import com.zytd.account.books.common.base.TokenVO;
-import com.zytd.account.books.common.constants.CommonConstants;
-import com.zytd.account.books.common.utils.JwtTokenUtil;
-import com.zytd.account.books.vo.member.MemberVO;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.BeanUtils;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.authentication.InternalAuthenticationServiceException;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.authentication.dao.AbstractUserDetailsAuthenticationProvider;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.factory.PasswordEncoderFactories;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.core.userdetails.UserDetailsPasswordService;
-import org.springframework.util.Assert;
-
-import java.util.Objects;
 
 /**
  * An {@link AuthenticationProvider} implementation that retrieves user details from a
@@ -56,7 +39,6 @@ public class SmsVerifyCodeAuthenticationProvider implements AuthenticationProvid
 
 	@Override
 	public Authentication authenticate(Authentication authentication) throws AuthenticationException {
-		authentication.getDetails();
 		if (!supports(authentication.getClass())) {
 			return null;
 		}
@@ -72,12 +54,10 @@ public class SmsVerifyCodeAuthenticationProvider implements AuthenticationProvid
 		if(userDetails == null){
 			throw new UsernameNotFoundException(USE_NOT_FOUND);
 		}
-		String verifyCode = userDetails.getPassword();
+		String verifyCode = userDetails.getVerifyCode();
 		if(StringUtils.isBlank(verifyCode) || !token.getCredentials().toString().equals(verifyCode)){
 			throw new BadCredentialsException(USER_NOT_FOUND_VERIFY_CODE);
 		}
-		// 设置用户信息登录成功后用于保存并生成token
-		token.setDetails(userDetails);
 	}
 
 	@Override

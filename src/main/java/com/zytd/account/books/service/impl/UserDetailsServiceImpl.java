@@ -28,6 +28,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         //查询验证码
         MemberVerificationCode memberVerificationCode = memberVerificationCodeService.selectByPhoneAndType(s, VerificationCodeTypeEnum.login.getCode());
         if(Objects.isNull(memberVerificationCode))  throw new UsernameNotFoundException("用户密码不存在!");
-        return new LoginUserDetails(member, memberVerificationCode.getVerificationCode());
+        return new LoginUserDetails(member, member.getPassword(),memberVerificationCode.getVerificationCode());
     }
 }

@@ -17,12 +17,20 @@ public class LoginUserDetails implements UserDetails {
 
     private String password;
 
+    private String verifyCode;
+
     public LoginUserDetails() {
     }
 
     public LoginUserDetails(Member member, String password) {
         this.member = member;
         this.password = password;
+    }
+
+    public LoginUserDetails(Member member, String password, String verifyCode) {
+        this.member = member;
+        this.password = password;
+        this.verifyCode = verifyCode;
     }
 
     @Override
