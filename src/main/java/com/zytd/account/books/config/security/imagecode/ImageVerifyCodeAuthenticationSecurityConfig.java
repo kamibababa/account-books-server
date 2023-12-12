@@ -34,7 +34,7 @@ public class ImageVerifyCodeAuthenticationSecurityConfig  extends SecurityConfig
         //设置自定义provider的认证器userDetailsService
         ImageVerifyCodeAuthenticationProvider authenticationProvider = new ImageVerifyCodeAuthenticationProvider();
         authenticationProvider.setUserDetailsService(userDetailsService);
-        //在UsernamePasswordAuthenticationFilter过滤前执行,执行完继续执行用户名和密码验证
+        // 替换掉UsernamePasswordAuthenticationFilter
         http.authenticationProvider(authenticationProvider)
         .addFilterAt(imageVerifyCodeAuthenticationFilter,UsernamePasswordAuthenticationFilter.class);
     }

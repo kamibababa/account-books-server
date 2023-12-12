@@ -3,6 +3,7 @@ package com.zytd.account.books.config;
 import com.zytd.account.books.config.security.*;
 import com.zytd.account.books.config.security.imagecode.ImageVerifyCodeAuthenticationSecurityConfig;
 import com.zytd.account.books.config.security.smscode.SmsVerifyCodeAuthenticationSecurityConfig;
+import com.zytd.account.books.config.security.VerificationCodePasswordEncoder;
 import com.zytd.account.books.service.impl.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
