@@ -38,7 +38,7 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
         try {
             String token = request.getHeader("token");
             if(StringUtils.isBlank(token)) {
-                authenticationEntryPointHandler.commence(request,response,new AccountExpiredException("token不存在"));
+                filterChain.doFilter(request, response);
                 return;
             }
             //解析token

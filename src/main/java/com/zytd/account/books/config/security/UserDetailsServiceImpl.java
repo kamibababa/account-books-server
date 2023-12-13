@@ -1,9 +1,10 @@
-package com.zytd.account.books.service.impl;
+package com.zytd.account.books.config.security;
 
 import com.zytd.account.books.common.base.LoginUserDetails;
 import com.zytd.account.books.enums.VerificationCodeTypeEnum;
 import com.zytd.account.books.model.Member;
 import com.zytd.account.books.model.MemberVerificationCode;
+import com.zytd.account.books.service.MemberExtendService;
 import com.zytd.account.books.service.MemberService;
 import com.zytd.account.books.service.MemberVerificationCodeService;
 import lombok.RequiredArgsConstructor;
@@ -19,15 +20,16 @@ import java.util.Objects;
 @RequiredArgsConstructor(onConstructor_ = {@Autowired})
 public class UserDetailsServiceImpl implements UserDetailsService {
     private final MemberService memberService;
-    private final MemberVerificationCodeService memberVerificationCodeService;
+    private final MemberExtendService memberExtendService;
 
     @Override
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
         Member member = memberService.selectByPhone(s);
-        if(Objects.isNull(member))  throw new UsernameNotFoundException("用户不存在!");
+        if(Objects.isNull(member))  {
+            throw new UsernameNotFoundException("用户不存在!");
+        }
         //查询验证码
-        MemberVerificationCode memberVerificationCode = memberVerificationCodeService.selectByPhoneAndType(s, VerificationCodeTypeEnum.login.getCode());
-        if(Objects.isNull(memberVerificationCode))  throw new UsernameNotFoundException("用户密码不存在!");
-        return new LoginUserDetails(member, member.getPassword(),memberVerificationCode.getVerificationCode());
+        String verifyCode = memberExtendService.getVerifyCode(s, VerificationCodeTypeEnum.IMAGE.getType());
+        return new LoginUserDetails(member, member.getPassword(),verifyCode);
     }
 }

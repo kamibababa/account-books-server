@@ -4,7 +4,7 @@ import com.zytd.account.books.config.security.*;
 import com.zytd.account.books.config.security.imagecode.ImageVerifyCodeAuthenticationSecurityConfig;
 import com.zytd.account.books.config.security.smscode.SmsVerifyCodeAuthenticationSecurityConfig;
 import com.zytd.account.books.config.security.VerificationCodePasswordEncoder;
-import com.zytd.account.books.service.impl.UserDetailsServiceImpl;
+import com.zytd.account.books.config.security.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -50,10 +50,16 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
         return new VerificationCodePasswordEncoder();
     }
 
+    /**
+     * 禁用parentManager
+     * @param auth
+     * @throws Exception
+     */
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        super.configure(auth);
-        auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
+//        auth.parentAuthenticationManager(null);
+//        super.configure(auth);
+//        auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
     }
 
     @Override

@@ -6,6 +6,7 @@ import com.zytd.account.books.common.base.LoginUserDetails;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.InternalAuthenticationServiceException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -55,8 +56,8 @@ public class SmsVerifyCodeAuthenticationProvider implements AuthenticationProvid
 			throw new UsernameNotFoundException(USE_NOT_FOUND);
 		}
 		String verifyCode = userDetails.getVerifyCode();
-		if(StringUtils.isBlank(verifyCode) || !token.getCredentials().toString().equals(verifyCode)){
-			throw new BadCredentialsException(USER_NOT_FOUND_VERIFY_CODE);
+		if(StringUtils.isBlank(verifyCode) || !token.getCredentials().toString().toUpperCase().equals(verifyCode)){
+			throw new InternalAuthenticationServiceException(USER_NOT_FOUND_VERIFY_CODE);
 		}
 	}
 

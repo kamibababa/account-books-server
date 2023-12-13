@@ -62,4 +62,9 @@ public class LocalCacheUtil extends AbstractCacheUtil {
         cache.remove(key);
         expireCache.remove(key);
     }
+
+    /**
+     * TODO 定时任务定时清除过期的key，防止内存泄漏
+     */
+
 }

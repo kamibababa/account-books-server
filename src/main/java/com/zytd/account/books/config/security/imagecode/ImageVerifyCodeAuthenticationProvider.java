@@ -19,21 +19,16 @@ package com.zytd.account.books.config.security.imagecode;
 import com.zytd.account.books.common.base.LoginUserDetails;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.security.authentication.*;
-import org.springframework.security.authentication.dao.AbstractUserDetailsAuthenticationProvider;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.factory.PasswordEncoderFactories;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.core.userdetails.UserDetailsPasswordService;
-import org.springframework.util.Assert;
 
 /**
  * 图片验证码：用于用户名、密码、验证码登录
  */
-public class ImageVerifyCodeAuthenticationProvider implements AuthenticationProvider {
+public class ImageVerifyCodeAuthenticationProvider extends DaoAuthenticationProvider {
 	// ~ Static fields/initializers
 	// =====================================================================================
 
@@ -45,18 +40,7 @@ public class ImageVerifyCodeAuthenticationProvider implements AuthenticationProv
 	private static final String USER_NOT_FOUND = "用户名或密码错误";
 	private static final String USER_NOT_FOUND_VERIFY_CODE = "验证码错误";
 
-	private UserDetailsService userDetailsService;
-
 	public ImageVerifyCodeAuthenticationProvider() {
-	}
-
-
-	public void setUserDetailsService(UserDetailsService userDetailsService) {
-		this.userDetailsService = userDetailsService;
-	}
-
-	protected UserDetailsService getUserDetailsService() {
-		return userDetailsService;
 	}
 
 
@@ -70,7 +54,7 @@ public class ImageVerifyCodeAuthenticationProvider implements AuthenticationProv
 		// 验证
 		doAuthenticate(imageVerifyCodeAuthenticationToken);
 		// 为null标识验证通过，由parentProvider：用户名和密码继续验证
-		return null;
+		return super.authenticate(authentication);
 	}
 
 	private void doAuthenticate(ImageVerifyCodeAuthenticationToken token) {
@@ -79,7 +63,7 @@ public class ImageVerifyCodeAuthenticationProvider implements AuthenticationProv
 			throw new UsernameNotFoundException(USER_NOT_FOUND);
 		}
 		String verifyCode = userDetails.getVerifyCode();
-		if(StringUtils.isBlank(verifyCode) || !token.getVerifyCode().equals(verifyCode)){
+		if(StringUtils.isBlank(verifyCode) || !token.getVerifyCode().toUpperCase().equals(verifyCode)){
 			throw new CredentialsExpiredException(USER_NOT_FOUND_VERIFY_CODE);
 		}
 	}

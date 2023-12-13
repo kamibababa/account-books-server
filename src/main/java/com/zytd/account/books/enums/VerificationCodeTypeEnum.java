@@ -8,11 +8,12 @@ import lombok.Getter;
 @Getter
 public enum VerificationCodeTypeEnum {
 
-    login(1,"注册/登录"),
-    DISABLE(2,""),
+    SMS(1,"sms","短信"),
+    IMAGE(2,"image","图片验证码"),
     ;
 
     private Integer code;
+    private String type;
     private String desc;
 
     public static VerificationCodeTypeEnum getByCode(Integer code) {

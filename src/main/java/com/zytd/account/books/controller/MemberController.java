@@ -1,12 +1,10 @@
 package com.zytd.account.books.controller;
 
 
-import com.alibaba.fastjson.util.IOUtils;
-import com.google.code.kaptcha.Constants;
 import com.google.code.kaptcha.Producer;
-import com.google.code.kaptcha.impl.DefaultKaptcha;
-import com.mysql.cj.util.Base64Decoder;
 import com.zytd.account.books.common.base.ResultVO;
+import com.zytd.account.books.enums.VerificationCodeTypeEnum;
+import com.zytd.account.books.model.VerifyCode;
 import com.zytd.account.books.param.member.LoginParam;
 import com.zytd.account.books.service.MemberExtendService;
 import com.zytd.account.books.vo.member.MemberVO;
@@ -40,6 +38,7 @@ import java.io.IOException;
 @RequestMapping("/member")
 @AllArgsConstructor(onConstructor_ = {@Autowired})
 public class MemberController {
+
     private final MemberExtendService memberExtendService;
     private final Producer producer;
 
@@ -64,14 +63,14 @@ public class MemberController {
     @ApiOperation("获取短信验证码")
     @PostMapping("getVerifyCode")
     public ResultVO<String> getVerifyCode(@RequestBody LoginParam param){
-        return memberExtendService.getVerifyCode(param.getPhone());
+        // 实际是生成验证码
+        ResultVO<String> verifyCode = memberExtendService.getVerifyCode(param.getPhone());
+        return verifyCode;
     }
 
     @ApiOperation("获取图片验证码")
     @PostMapping("getImageCode")
-    public ResultVO<String> getCaptchaCode(HttpServletResponse response, HttpServletRequest request) throws IOException {
-        response.setHeader("Cache-Control", "no-store, no-cache");
-        response.setContentType("image/jpeg");
+    public ResultVO<String> getImageCode(@RequestBody LoginParam param) throws IOException {
         // 生成文字验证码
         String text = producer.createText();
         // 生成图片验证码
@@ -82,8 +81,10 @@ public class MemberController {
         BASE64Encoder base64Encoder = new BASE64Encoder();
         String imageBase64 = base64Encoder.encodeBuffer(bytes).trim();
         imageBase64 = imageBase64.replaceAll("\n", "").replaceAll("\r", "");
+        // 保存验证码
+        VerifyCode code = new VerifyCode(param.getPhone(), text.toUpperCase(), VerificationCodeTypeEnum.IMAGE.getType(),90);
+        memberExtendService.save(code);
         return ResultVO.success("data:image/jpg;base64," + imageBase64);
-
     }
 
 

@@ -1,11 +1,13 @@
 package com.zytd.account.books.service.impl;
 
+import com.google.code.kaptcha.Producer;
 import com.zytd.account.books.common.base.*;
 import com.zytd.account.books.common.constants.CommonConstants;
 import com.zytd.account.books.common.utils.*;
 import com.zytd.account.books.enums.VerificationCodeTypeEnum;
 import com.zytd.account.books.model.Member;
 import com.zytd.account.books.model.MemberVerificationCode;
+import com.zytd.account.books.model.VerifyCode;
 import com.zytd.account.books.param.member.LoginByPasswordParam;
 import com.zytd.account.books.param.member.LoginParam;
 import com.zytd.account.books.param.member.RegisterParam;
@@ -36,7 +38,7 @@ public class MemberExtendServiceImpl implements MemberExtendService {
     private final CacheUtil cacheUtil;
 
     @Autowired
-    private MemberVerificationCodeService memberVerificationCodeService;
+    private Producer producer;
 
     /**
      * 注册并登录
@@ -104,15 +106,13 @@ public class MemberExtendServiceImpl implements MemberExtendService {
     public ResultVO<String> getVerifyCode(String phone) {
         AssertUtils.assertTrue(!StringUtils.isEmpty(phone),"手机号不能为空");
         // 1 生成验证码
-        // 2 发送短信
-        // 3 存储验证码
-        // 4 返回验证码
-        MemberVerificationCode verificationCode = memberVerificationCodeService.selectByPhoneAndType(phone, VerificationCodeTypeEnum.login.getCode());
-        if(verificationCode != null){
-            return ResultVO.success(verificationCode.getVerificationCode());
-        }
-        // 测试数据
-        return ResultVO.success("test666");
+        String verifyCode = producer.createText();
+        // 2 存储验证码
+        VerifyCode code = new VerifyCode(phone,verifyCode.toUpperCase(),VerificationCodeTypeEnum.SMS.getType(),90);
+        save(code);
+        // 3 发送短信
+        // 4 返回验证码（如果接入短信是无需返回的）
+        return ResultVO.success(verifyCode);
     }
 
     /**
@@ -137,4 +137,16 @@ public class MemberExtendServiceImpl implements MemberExtendService {
         cacheUtil.deleteValue(CommonConstants.token_prefix + ThreadLocalUtil.MEMBER_ID_HOLDER.get());
         return ResultVO.success();
     }
+
+    @Override
+    public void save(VerifyCode verifyCode) {
+        AssertUtils.assertTrue(Objects.nonNull(verifyCode),"验证码信息不能为空");
+        cacheUtil.setValue(verifyCode.getUsername() + "_" + verifyCode.getType(),verifyCode.getVerifyCode(), verifyCode.getExpire());
+    }
+
+    @Override
+    public String getVerifyCode(String username, String type) {
+        return cacheUtil.getStringValue(username + "_" + type);
+    }
+
 }
