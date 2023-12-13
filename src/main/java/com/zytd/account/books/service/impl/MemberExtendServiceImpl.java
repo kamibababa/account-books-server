@@ -34,7 +34,6 @@ import java.util.Objects;
 public class MemberExtendServiceImpl implements MemberExtendService {
     private final MemberService memberService;
     private final JwtTokenUtil jwtTokenUtil;
-    private final AuthenticationManager authenticationManager;
     private final CacheUtil cacheUtil;
 
     @Autowired
@@ -82,22 +81,22 @@ public class MemberExtendServiceImpl implements MemberExtendService {
     /**
      * 验证码登录
      */
-    @Override
-    public ResultVO<MemberVO> loginByVerifyCode(LoginParam param) {
-        UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(param.getPhone(), param.getVerifyCode());
-        Authentication authenticate = authenticationManager.authenticate(authentication);
-        if(Objects.isNull(authenticate))    return ResultVO.error("登录失败");
-        ////获取用户信息
-        LoginUserDetails user = (LoginUserDetails) authenticate.getPrincipal();
-        //生成token
-        TokenVO tokenVO = jwtTokenUtil.generateToken(new MemberInfoVO(user.getMember().getId()));
-        MemberVO memberVO = new MemberVO();
-        BeanUtils.copyProperties(user.getMember(), memberVO);
-        memberVO.setMemberId(user.getMember().getId());
-        memberVO.setToken(tokenVO.getToken());
-        cacheUtil.setValue(CommonConstants.token_prefix + memberVO.getMemberId(), memberVO.getToken());
-        return ResultVO.success(memberVO);
-    }
+//    @Override
+//    public ResultVO<MemberVO> loginByVerifyCode(LoginParam param) {
+//        UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(param.getPhone(), param.getVerifyCode());
+//        Authentication authenticate = authenticationManager.authenticate(authentication);
+//        if(Objects.isNull(authenticate))    return ResultVO.error("登录失败");
+//        ////获取用户信息
+//        LoginUserDetails user = (LoginUserDetails) authenticate.getPrincipal();
+//        //生成token
+//        TokenVO tokenVO = jwtTokenUtil.generateToken(new MemberInfoVO(user.getMember().getId()));
+//        MemberVO memberVO = new MemberVO();
+//        BeanUtils.copyProperties(user.getMember(), memberVO);
+//        memberVO.setMemberId(user.getMember().getId());
+//        memberVO.setToken(tokenVO.getToken());
+//        cacheUtil.setValue(CommonConstants.token_prefix + memberVO.getMemberId(), memberVO.getToken());
+//        return ResultVO.success(null);
+//    }
 
     /**
      * 生成并返回验证码登录

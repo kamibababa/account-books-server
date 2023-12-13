@@ -54,11 +54,11 @@ public class MemberController {
 //        return memberExtendService.loginByPassword(param);
 //    }
 
-    @ApiOperation("验证码登录")
-    @PostMapping("loginByVerifyCode")
-    public ResultVO<MemberVO> loginByVerifyCode(@RequestBody LoginParam param){
-        return memberExtendService.loginByVerifyCode(param);
-    }
+//    @ApiOperation("验证码登录")
+//    @PostMapping("loginByVerifyCode")
+//    public ResultVO<MemberVO> loginByVerifyCode(@RequestBody LoginParam param){
+//        return memberExtendService.loginByVerifyCode(param);
+//    }
 
     @ApiOperation("获取短信验证码")
     @PostMapping("getVerifyCode")

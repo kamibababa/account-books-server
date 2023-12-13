@@ -19,10 +19,10 @@ public interface MemberExtendService {
      */
     ResultVO<MemberVO> loginByPassword(@RequestBody LoginByPasswordParam param);
 
-    /**
-     * 验证码登录
-     */
-    ResultVO<MemberVO> loginByVerifyCode(@RequestBody LoginParam param);
+//    /**
+//     * 验证码登录
+//     */
+//    ResultVO<MemberVO> loginByVerifyCode(@RequestBody LoginParam param);
 
     /**
      * 获取验证码
