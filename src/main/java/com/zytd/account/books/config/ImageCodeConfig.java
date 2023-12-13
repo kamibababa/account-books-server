@@ -34,10 +34,13 @@ public class ImageCodeConfig {
         //无干扰：com.google.code.kaptcha.impl.NoNoise
 //		properties.setProperty("kaptcha.noise.impl","com.google.code.kaptcha.impl.NoNoise");
         //图片干扰颜色：默认为黑色
-        properties.setProperty("kaptcha.noise.color", "blue");
+        properties.setProperty("kaptcha.noise.color", "orange");
+        properties.setProperty("kaptcha.background.clear.from","255,200,0");
+        properties.setProperty("kaptcha.background.clear.to","205,200,177");
+        properties.setProperty("kaptcha.border.color","255,255,255");
         //图片渲染效果：默认水纹
         // 水纹com.google.code.kaptcha.impl.WaterRipple 鱼眼com.google.code.kaptcha.impl.FishEyeGimpy 阴影com.google.code.kaptcha.impl.ShadowGimpy
-        //properties.setProperty("kaptcha.obscurificator.impl", "com.google.code.kaptcha.impl.ShadowGimpy");
+//        properties.setProperty("kaptcha.obscurificator.impl", "com.google.code.kaptcha.impl.FishEyeGimpy");
 
         DefaultKaptcha Kaptcha = new DefaultKaptcha();
         Config config=new Config(properties);
