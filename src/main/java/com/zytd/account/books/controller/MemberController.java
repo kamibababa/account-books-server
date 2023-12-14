@@ -82,7 +82,7 @@ public class MemberController {
         String imageBase64 = base64Encoder.encodeBuffer(bytes).trim();
         imageBase64 = imageBase64.replaceAll("\n", "").replaceAll("\r", "");
         // 保存验证码
-        VerifyCode code = new VerifyCode(param.getPhone(), text.toUpperCase(), VerificationCodeTypeEnum.IMAGE.getType(),90);
+        VerifyCode code = new VerifyCode(param.getUsername(), text.toUpperCase(), VerificationCodeTypeEnum.IMAGE.getType(),90);
         memberExtendService.save(code);
         return ResultVO.success("data:image/jpg;base64," + imageBase64);
     }

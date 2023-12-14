@@ -9,6 +9,8 @@ import java.io.Serializable;
 public class LoginParam implements Serializable {
     @ApiModelProperty(value = "手机号", required = true)
     private String phone;
+    @ApiModelProperty(value = "用户名", required = true)
+    private String username;
     @ApiModelProperty(value = "验证码", required = true)
     private String verifyCode;
 }
