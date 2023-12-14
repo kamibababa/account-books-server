@@ -2,7 +2,6 @@ package com.zytd.account.books.common.utils;
 
 
 import com.alibaba.druid.util.DaemonThreadFactory;
-import org.springframework.beans.BeansException;
 
 import javax.annotation.PostConstruct;
 import java.util.Calendar;
