@@ -10,5 +10,7 @@ spring:
     active:
       - dev
       - swagger
+logging:
+  config: classpath:logback-spring.xml
 
 
