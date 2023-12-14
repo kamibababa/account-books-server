@@ -1,6 +1,8 @@
 package com.zytd.account.books.common.utils;
 
-public interface CacheUtil {
+import org.springframework.beans.factory.config.BeanPostProcessor;
+
+public interface CacheUtil extends BeanPostProcessor {
 
     Object getValue(String key);
 
