@@ -1,6 +1,5 @@
 package com.zytd.account.books.service;
 
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.zytd.account.books.common.base.ResultVO;
 import com.zytd.account.books.param.user.*;
 import com.zytd.account.books.vo.user.UserManagerVO;
@@ -36,5 +35,5 @@ public interface UserManageExtendService {
     /**
      * 根据类型拉取列表
      */
-    ResultVO<Page<UserManagerVO>> getListByType(UserManagerListGetParam param);
+    ResultVO<List<UserManagerVO>> getListByType(UserManagerListGetParam param);
 }

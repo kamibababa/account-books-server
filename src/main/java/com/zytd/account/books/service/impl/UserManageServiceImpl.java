@@ -26,10 +26,9 @@ public class UserManageServiceImpl extends ServiceImpl<UserManageMapper, UserMan
      * 根据类型拉取列表
      */
     @Override
-    public Page<UserManage> queryByTypeAndMemberId(Integer type, Long memberId) {
+    public List<UserManage> queryByTypeAndMemberId(Integer type, Long memberId) {
         LambdaQueryWrapper<UserManage> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.eq(UserManage::getType, type).eq(UserManage::getMemberId, memberId).orderByAsc(UserManage::getSerialNum);
-        Page<UserManage> page = new Page<>();
-        return page(page,queryWrapper);
+        return list(queryWrapper);
     }
 }
