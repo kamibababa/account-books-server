@@ -1,11 +1,13 @@
 package com.zytd.account.books.param.income;
 
+import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.io.Serializable;
 import java.util.List;
 
+@ApiModel("收入账单新增")
 @Data
 public class IncomeOrderAddParam implements Serializable {
     @ApiModelProperty(value = "类型 1-批发 2-零售", required = true)

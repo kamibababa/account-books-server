@@ -3,6 +3,7 @@ package com.zytd.account.books.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.zytd.account.books.enums.OrderTypeEnum;
 import com.zytd.account.books.model.IncomeOrder;
 import com.zytd.account.books.dao.IncomeOrderMapper;
 import com.zytd.account.books.param.income.IncomeOrderPageParam;
@@ -11,6 +12,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.zytd.account.books.vo.income.IncomeOrderPageVO;
 import com.zytd.account.books.vo.income.IncomeVO;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 /**
  * <p>
@@ -39,7 +41,11 @@ public class IncomeOrderServiceImpl extends ServiceImpl<IncomeOrderMapper, Incom
     @Override
     public IPage<IncomeOrderPageVO> page(IncomeOrderPageParam param) {
         Page<IncomeOrderPageVO> page = new Page<>(param.getPageNum(), param.getPageSize());
-        return baseMapper.page(page, param);
+        IPage<IncomeOrderPageVO> iPage = baseMapper.page(page, param);
+        if(!CollectionUtils.isEmpty(iPage.getRecords())){
+            iPage.getRecords().forEach(vo -> vo.setTypeDesc(OrderTypeEnum.getMessage(vo.getType())));
+        }
+        return iPage;
     }
 
     /**

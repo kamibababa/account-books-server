@@ -13,10 +13,13 @@ public class IncomeOrderVO implements Serializable {
     private Long incomeOrderId;
 
     @ApiModelProperty(value = "类型 1-批发 2-零售", required = true)
-    private String type;
+    private Integer type;
+
+    @ApiModelProperty(value = "类型 1-批发 2-零售", required = true)
+    private String typeDesc;
 
     @ApiModelProperty(value = "用户名字")
-    private String userName;
+    private String username;
 
     @ApiModelProperty(value = "详细地址")
     private String address;
@@ -40,5 +43,5 @@ public class IncomeOrderVO implements Serializable {
     private Integer status;
 
     @ApiModelProperty(value = "订单详情")
-    private List<IncomeOrderDetailVO> orderDetails;
+    private List<IncomeOrderDetailVO> details;
 }

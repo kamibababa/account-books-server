@@ -27,7 +27,7 @@
         </sql>
 
         <select id="page" resultType="com.zytd.account.books.vo.expenditure.ExpenditureOrderPageVO">
-                select eo.id expenditureOrderId, um.name userName, eo.type, pt.type productType, eo.total_money totalMoney, eo.weight, eo.day
+                select eo.id expenditureOrderId, um.name username, eo.type, pt.type productType, eo.total_money totalMoney, eo.weight, eo.day
                 from expenditure_order eo
                 left join user_manage um on um.id = eo.user_id
                 left join product_type pt on pt.id = eo.product_type_id

@@ -13,8 +13,14 @@ public class IncomeOrderPageVO implements Serializable {
     @ApiModelProperty(value = "类型 1-批发 2-零售")
     private Integer type;
 
+    @ApiModelProperty(value = "类型 1-批发 2-零售")
+    private String typeDesc;
+
+    @ApiModelProperty(value = "用户ID")
+    private Long userId;
+
     @ApiModelProperty(value = "用户名字")
-    private String userName;
+    private String username;
 
     @ApiModelProperty(value = "总金额，单位元")
     private Integer totalMoney;

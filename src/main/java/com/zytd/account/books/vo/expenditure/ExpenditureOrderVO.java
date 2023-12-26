@@ -12,7 +12,7 @@ public class ExpenditureOrderVO implements Serializable {
     private Long expenditureOrderId;
 
     @ApiModelProperty(value = "用户名字")
-    private String userName;
+    private String username;
 
     @ApiModelProperty(value = "类型 1-进货 2-其他")
     private Integer type;

@@ -74,7 +74,7 @@ public class ExpenditureOrderExtendServiceImpl implements ExpenditureOrderExtend
         ExpenditureOrderVO vo = new ExpenditureOrderVO();
         BeanUtils.copyProperties(expenditureOrder, vo);
         UserManage userManage = userManageService.getById(expenditureOrder.getUserId());
-        vo.setUserName(Objects.nonNull(userManage) ? userManage.getName() : "");
+        vo.setUsername(Objects.nonNull(userManage) ? userManage.getName() : "");
         ProductType productType = productTypeService.getById(expenditureOrder.getProductTypeId());
         vo.setProductType(Objects.nonNull(productType) ? productType.getType() : "");
         return ResultVO.success(vo);

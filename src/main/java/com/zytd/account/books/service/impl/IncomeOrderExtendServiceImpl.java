@@ -113,11 +113,12 @@ public class IncomeOrderExtendServiceImpl implements IncomeOrderExtendService {
         IncomeOrderVO vo = new IncomeOrderVO();
         BeanUtils.copyProperties(incomeOrder, vo);
         vo.setIncomeOrderId(incomeOrder.getId());
-        vo.setType(OrderTypeEnum.getMessage(incomeOrder.getType()));
+        vo.setType(incomeOrder.getType());
         if(Objects.nonNull(incomeOrder.getUserId())) {
             UserManage userManage = userManageService.getById(incomeOrder.getUserId());
-            vo.setUserName(Objects.nonNull(userManage) ? userManage.getName() : StringPool.EMPTY);
+            vo.setUsername(Objects.nonNull(userManage) ? userManage.getName() : StringPool.EMPTY);
             vo.setAddress(Objects.nonNull(userManage) ? userManage.getAddress() : StringPool.EMPTY);
+            vo.setTypeDesc(OrderTypeEnum.getMessage(vo.getType()));
         }
         List<IncomeOrderDetailVO> orderDetails = new ArrayList<>();
         List<IncomeOrderDetail> detailList = incomeOrderDetailService.queryByIncomeOrderId(param.getIncomeOrderId());
@@ -125,12 +126,13 @@ public class IncomeOrderExtendServiceImpl implements IncomeOrderExtendService {
         detailList.forEach(incomeOrderDetail -> {
             IncomeOrderDetailVO detailVO = new IncomeOrderDetailVO();
             List<ProductType> collect = typeList.stream().filter(it -> it.getId().equals(incomeOrderDetail.getProductTypeId())).collect(Collectors.toList());
-            detailVO.setProductType(CollectionUtils.isNotEmpty(collect) ? collect.get(0).getType() : StringPool.EMPTY);
+            detailVO.setProductTypeId(CollectionUtils.isNotEmpty(collect) ? collect.get(0).getId() : null);
+            detailVO.setProductTypeName(CollectionUtils.isNotEmpty(collect) ? collect.get(0).getType() : StringPool.EMPTY);
             detailVO.setWeight(incomeOrderDetail.getWeight());
             detailVO.setMoney(incomeOrderDetail.getMoney());
             orderDetails.add(detailVO);
         });
-        vo.setOrderDetails(orderDetails);
+        vo.setDetails(orderDetails);
         return ResultVO.success(vo);
     }
 

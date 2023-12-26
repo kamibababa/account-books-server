@@ -24,10 +24,10 @@
         </sql>
 
         <select id="page" resultType="com.zytd.account.books.vo.income.IncomeOrderPageVO">
-                select io.id incomeOrderId, io.type, um.name userName, io.total_money totalMoney, io.unpaid_money unpaidMoney, io.day, io.status
+                select io.id incomeOrderId, io.type, um.id userId, um.name username, io.total_money totalMoney, io.unpaid_money unpaidMoney, io.day, io.status
                 from income_order io
                 left join user_manage um on io.user_id = um.id
-                where io.deleted = 0 and io.day between #{startTime} and #{endTime}
+                where io.deleted = 0 and io.day between #{param.startTime} and #{param.endTime}
                 <if test="param.orderType != null">
                         and io.type = #{param.orderType}
                 </if>

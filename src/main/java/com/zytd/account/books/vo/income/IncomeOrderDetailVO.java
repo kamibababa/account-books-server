@@ -9,7 +9,10 @@ import java.io.Serializable;
 public class IncomeOrderDetailVO implements Serializable {
 
     @ApiModelProperty(value = "商品类型")
-    private String productType;
+    private Long productTypeId;
+
+    @ApiModelProperty(value = "商品名称")
+    private String productTypeName;
 
     @ApiModelProperty(value = "重量，单位斤")
     private Integer weight;
