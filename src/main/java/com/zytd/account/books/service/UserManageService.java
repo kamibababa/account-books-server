@@ -1,5 +1,6 @@
 package com.zytd.account.books.service;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.zytd.account.books.model.UserManage;
 import com.baomidou.mybatisplus.extension.service.IService;
 
@@ -18,5 +19,5 @@ public interface UserManageService extends IService<UserManage> {
     /**
      * 根据类型拉取列表
      */
-    List<UserManage> queryByTypeAndMemberId(Integer type, Long memberId);
+    Page<UserManage> queryByTypeAndMemberId(Integer type, Long memberId);
 }

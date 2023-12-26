@@ -1,6 +1,8 @@
 package com.zytd.account.books.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.zytd.account.books.model.UserManage;
 import com.zytd.account.books.dao.UserManageMapper;
 import com.zytd.account.books.service.UserManageService;
@@ -24,9 +26,10 @@ public class UserManageServiceImpl extends ServiceImpl<UserManageMapper, UserMan
      * 根据类型拉取列表
      */
     @Override
-    public List<UserManage> queryByTypeAndMemberId(Integer type, Long memberId) {
+    public Page<UserManage> queryByTypeAndMemberId(Integer type, Long memberId) {
         LambdaQueryWrapper<UserManage> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.eq(UserManage::getType, type).eq(UserManage::getMemberId, memberId).orderByAsc(UserManage::getSerialNum);
-        return list(queryWrapper);
+        Page<UserManage> page = new Page<>();
+        return page(page,queryWrapper);
     }
 }
