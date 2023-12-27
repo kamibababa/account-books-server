@@ -1,5 +1,6 @@
 package com.zytd.account.books.service.impl;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.zytd.account.books.common.base.ResultVO;
 import com.zytd.account.books.common.utils.ThreadLocalUtil;
 import com.zytd.account.books.enums.UserManagerTypeEnum;
@@ -111,5 +112,23 @@ public class UserManageExtendServiceImpl implements UserManageExtendService {
         list.forEach(userManage -> voList.add(new UserManagerVO(userManage.getId(), userManage.getType(), userManage.getName(), userManage.getPhone(),
                 userManage.getAddress(), userManage.getRemark())));
         return ResultVO.success(voList);
+    }
+
+    /**
+     * 根据类型拉取列表
+     */
+    @Override
+    public ResultVO<Page<UserManagerVO>> page(UserManagerListGetParam param) {
+        List<UserManagerVO> voList = new ArrayList<>();
+        Long memberId = ThreadLocalUtil.MEMBER_ID_HOLDER.get();
+        param.setMemberId(memberId);
+        Page<UserManage> pages = userManageService.pages(param);
+        pages.getRecords().forEach(userManage -> voList.add(new UserManagerVO(userManage.getId(), userManage.getType(), userManage.getName(), userManage.getPhone(),
+                userManage.getAddress(), userManage.getRemark())));
+
+        Page<UserManagerVO> page = new Page<>();
+        BeanUtils.copyProperties(pages,page);
+        page.setRecords(voList);
+        return ResultVO.success(page);
     }
 }

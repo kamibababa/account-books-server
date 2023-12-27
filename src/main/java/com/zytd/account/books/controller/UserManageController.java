@@ -1,6 +1,7 @@
 package com.zytd.account.books.controller;
 
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.zytd.account.books.common.base.ResultVO;
 import com.zytd.account.books.param.user.*;
 import com.zytd.account.books.service.UserManageExtendService;
@@ -65,6 +66,12 @@ public class UserManageController {
     @PostMapping("getListByType")
     public ResultVO<List<UserManagerVO>> getListByType(@RequestBody UserManagerListGetParam param){
         return userManageExtendService.getListByType(param);
+    }
+
+    @ApiOperation("根据类型拉取分页")
+    @PostMapping("page")
+    public ResultVO<Page<UserManagerVO>> page(@RequestBody UserManagerListGetParam param){
+        return userManageExtendService.page(param);
     }
 }
 
