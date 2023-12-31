@@ -102,5 +102,10 @@ public class MemberController {
         return memberExtendService.logout();
     }
 
+    @ApiOperation("查看会员详情")
+    @PostMapping("edit")
+    public ResultVO<MemberVO> edit(){
+        return memberExtendService.detail();
+    }
 }
 

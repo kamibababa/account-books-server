@@ -21,4 +21,8 @@ public class UserManagerEditParam implements Serializable {
 
     @ApiModelProperty(value = "备注")
     private String remark;
+
+    @ApiModelProperty(value = "1启用0禁用")
+    private Integer enabled;
+
 }

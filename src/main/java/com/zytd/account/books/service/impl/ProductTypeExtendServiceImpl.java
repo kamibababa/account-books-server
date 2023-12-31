@@ -13,6 +13,7 @@ import com.zytd.account.books.service.ProductTypeExtendService;
 import com.zytd.account.books.service.ProductTypeService;
 import com.zytd.account.books.vo.product.ProductTypeVO;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -32,7 +33,7 @@ public class ProductTypeExtendServiceImpl implements ProductTypeExtendService {
      * 新增
      */
     @Override
-    public ResultVO<Boolean> add(ProductTypeAddParam param) {
+    public ResultVO<ProductTypeVO> add(ProductTypeAddParam param) {
         Long memberId = ThreadLocalUtil.MEMBER_ID_HOLDER.get();
         //根据名称去重
         ProductType productType = productTypeService.selectByMemberIdAndType(memberId, param.getType());
@@ -42,7 +43,9 @@ public class ProductTypeExtendServiceImpl implements ProductTypeExtendService {
         productType.setType(param.getType());
         productType.setCreatTime(new Date());
         productType.setUpdateTime(new Date());
-        return productTypeService.save(productType) ? ResultVO.success() : ResultVO.error("新增失败");
+        productTypeService.save(productType);
+        ProductTypeVO typeVO = new ProductTypeVO(productType.getId(), productType.getType(),productType.getSerialNum());
+        return ResultVO.success(typeVO);
     }
 
     /**
@@ -99,7 +102,7 @@ public class ProductTypeExtendServiceImpl implements ProductTypeExtendService {
         Long memberId = ThreadLocalUtil.MEMBER_ID_HOLDER.get();
         List<ProductTypeVO> voList = new ArrayList<>();
         List<ProductType> list = productTypeService.queryByMemberId(memberId);
-        list.forEach(productType -> voList.add(new ProductTypeVO(productType.getId(), productType.getType())));
+        list.forEach(productType -> voList.add(new ProductTypeVO(productType.getId(), productType.getType(),productType.getSerialNum())));
         return ResultVO.success(voList);
     }
 }

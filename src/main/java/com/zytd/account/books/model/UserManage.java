@@ -109,12 +109,17 @@ public class UserManage implements Serializable {
     /**
      * 创建时间
      */
-    private Date creatTime;
+    private Date createTime;
 
     /**
      * 修改时间
      */
     private Date updateTime;
+
+    /**
+     * 启用禁用
+     */
+    private Integer enabled;
 
 
 }

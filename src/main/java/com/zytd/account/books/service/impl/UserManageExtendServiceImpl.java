@@ -16,6 +16,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -37,7 +38,7 @@ public class UserManageExtendServiceImpl implements UserManageExtendService {
         UserManage userManage = new UserManage();
         BeanUtils.copyProperties(param, userManage);
         userManage.setMemberId(memberId);
-        userManage.setCreatTime(new Date());
+        userManage.setCreateTime(new Date());
         userManage.setUpdateTime(new Date());
         return userManageService.save(userManage) ? ResultVO.success() : ResultVO.error("新增失败");
     }
@@ -54,6 +55,7 @@ public class UserManageExtendServiceImpl implements UserManageExtendService {
         userManage.setAddress(param.getAddress());
         userManage.setRemark(param.getRemark());
         userManage.setUpdateTime(new Date());
+        userManage.setEnabled(param.getEnabled());
         return userManageService.updateById(userManage) ? ResultVO.success() : ResultVO.error("编辑失败");
     }
 
@@ -82,6 +84,7 @@ public class UserManageExtendServiceImpl implements UserManageExtendService {
         if(Objects.isNull(userManage))  return ResultVO.error("该数据不存在");
         UserManagerVO vo = new UserManagerVO();
         BeanUtils.copyProperties(userManage, vo);
+        vo.setCreateTime(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(userManage.getCreateTime()));
         vo.setUserManagerId(userManage.getId());
         return ResultVO.success(vo);
     }
@@ -110,7 +113,7 @@ public class UserManageExtendServiceImpl implements UserManageExtendService {
         Long memberId = ThreadLocalUtil.MEMBER_ID_HOLDER.get();
         List<UserManage> list = userManageService.queryByTypeAndMemberId(param.getType(), memberId);
         list.forEach(userManage -> voList.add(new UserManagerVO(userManage.getId(), userManage.getType(), userManage.getName(), userManage.getPhone(),
-                userManage.getAddress(), userManage.getRemark())));
+                userManage.getAddress(), userManage.getRemark(),new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(userManage.getCreateTime()),userManage.getEnabled())));
         return ResultVO.success(voList);
     }
 
@@ -123,9 +126,9 @@ public class UserManageExtendServiceImpl implements UserManageExtendService {
         Long memberId = ThreadLocalUtil.MEMBER_ID_HOLDER.get();
         param.setMemberId(memberId);
         Page<UserManage> pages = userManageService.pages(param);
-        pages.getRecords().forEach(userManage -> voList.add(new UserManagerVO(userManage.getId(), userManage.getType(), userManage.getName(), userManage.getPhone(),
-                userManage.getAddress(), userManage.getRemark())));
-
+        pages.getRecords().forEach(userManage ->
+                voList.add(new UserManagerVO(userManage.getId(), userManage.getType(), userManage.getName(), userManage.getPhone(),
+                userManage.getAddress(), userManage.getRemark(),new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(userManage.getCreateTime()),userManage.getEnabled())));
         Page<UserManagerVO> page = new Page<>();
         BeanUtils.copyProperties(pages,page);
         page.setRecords(voList);

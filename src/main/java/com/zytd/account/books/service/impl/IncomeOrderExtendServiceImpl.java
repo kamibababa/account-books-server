@@ -2,7 +2,8 @@ package com.zytd.account.books.service.impl;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.baomidou.mybatisplus.core.toolkit.StringPool;
-import com.google.common.collect.Lists;
+
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import com.zytd.account.books.common.base.ResultVO;
@@ -20,6 +21,8 @@ import com.zytd.account.books.vo.income.IncomeOrderPageVO;
 import com.zytd.account.books.vo.income.IncomeOrderVO;
 import com.zytd.account.books.vo.income.IncomeVO;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -52,11 +55,14 @@ public class IncomeOrderExtendServiceImpl implements IncomeOrderExtendService {
         if(incomeOrder.getUnpaidMoney() > 0){
             incomeOrder.setStatus(OrderStatusEnum.uncleared.getCode());
         }
+        if(StringUtils.isBlank(param.getDay())){
+            incomeOrder.setDay(new SimpleDateFormat("yyyy-MM-dd").format(new Date()));
+        }
         incomeOrder.setCreatTime(new Date());
         incomeOrder.setUpdateTime(new Date());
         incomeOrderService.save(incomeOrder);
         List<IncomeOrderDetail> list = new ArrayList<>();
-        param.getOrderDetail().forEach(incomeOrderDetailAddParam -> {
+        param.getDetails().forEach(incomeOrderDetailAddParam -> {
             IncomeOrderDetail orderDetail = new IncomeOrderDetail();
             orderDetail.setIncomeOrderId(incomeOrder.getId());
             orderDetail.setProductTypeId(incomeOrderDetailAddParam.getProductTypeId());
@@ -88,7 +94,7 @@ public class IncomeOrderExtendServiceImpl implements IncomeOrderExtendService {
         incomeOrderService.updateById(incomeOrder);
         incomeOrderDetailService.removeByIncomeOrderId(param.getIncomeOrderId());
         List<IncomeOrderDetail> list = new ArrayList<>();
-        param.getOrderDetail().forEach(incomeOrderDetailAddParam -> {
+        param.getDetails().forEach(incomeOrderDetailAddParam -> {
             IncomeOrderDetail orderDetail = new IncomeOrderDetail();
             orderDetail.setIncomeOrderId(incomeOrder.getId());
             orderDetail.setProductTypeId(incomeOrderDetailAddParam.getProductTypeId());

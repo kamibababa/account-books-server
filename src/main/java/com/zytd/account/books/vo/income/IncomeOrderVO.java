@@ -18,6 +18,9 @@ public class IncomeOrderVO implements Serializable {
     @ApiModelProperty(value = "类型 1-批发 2-零售", required = true)
     private String typeDesc;
 
+    @ApiModelProperty("用户ID")
+    private Long userId;
+
     @ApiModelProperty(value = "用户名字")
     private String username;
 

@@ -32,7 +32,7 @@ public class IncomeOrderAddParam implements Serializable {
     private String remark;
 
     @ApiModelProperty(value = "订单详情")
-    private List<IncomeOrderDetailAddParam> orderDetail;
+    private List<IncomeOrderDetailAddParam> details;
 
     @Data
     public static class IncomeOrderDetailAddParam implements Serializable{

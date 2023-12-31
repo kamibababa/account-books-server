@@ -1,5 +1,6 @@
 package com.zytd.account.books.vo.user;
 
+import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -7,6 +8,7 @@ import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 
+@ApiModel("用户管理")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -29,5 +31,10 @@ public class UserManagerVO implements Serializable {
     @ApiModelProperty(value = "备注")
     private String remark;
 
+    @ApiModelProperty(value = "创建日期")
+    private String createTime;
+
+    @ApiModelProperty(value = "1启用0禁用")
+    private Integer enabled;
 
 }

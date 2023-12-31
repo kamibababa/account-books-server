@@ -36,7 +36,7 @@ public class ProductTypeController {
 
     @ApiOperation("新增")
     @PostMapping("add")
-    public ResultVO<Boolean> add(@RequestBody ProductTypeAddParam param){
+    public ResultVO<ProductTypeVO> add(@RequestBody ProductTypeAddParam param){
         return productTypeExtendService.add(param);
     }
 
@@ -59,7 +59,7 @@ public class ProductTypeController {
     }
 
     @ApiOperation("拉取列表")
-    @PostMapping("getList")
+    @PostMapping("list")
     public ResultVO<List<ProductTypeVO>> getList(){
         return productTypeExtendService.getList();
     }

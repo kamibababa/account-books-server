@@ -14,7 +14,7 @@ public interface ProductTypeExtendService {
     /**
      * 新增
      */
-    ResultVO<Boolean> add(ProductTypeAddParam param);
+    ResultVO<ProductTypeVO> add(ProductTypeAddParam param);
 
     /**
      * 编辑
