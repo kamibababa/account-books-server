@@ -120,11 +120,11 @@ public class IncomeOrderExtendServiceImpl implements IncomeOrderExtendService {
         BeanUtils.copyProperties(incomeOrder, vo);
         vo.setIncomeOrderId(incomeOrder.getId());
         vo.setType(incomeOrder.getType());
+        vo.setTypeDesc(OrderTypeEnum.getMessage(vo.getType()));
         if(Objects.nonNull(incomeOrder.getUserId())) {
             UserManage userManage = userManageService.getById(incomeOrder.getUserId());
             vo.setUsername(Objects.nonNull(userManage) ? userManage.getName() : StringPool.EMPTY);
             vo.setAddress(Objects.nonNull(userManage) ? userManage.getAddress() : StringPool.EMPTY);
-            vo.setTypeDesc(OrderTypeEnum.getMessage(vo.getType()));
         }
         List<IncomeOrderDetailVO> orderDetails = new ArrayList<>();
         List<IncomeOrderDetail> detailList = incomeOrderDetailService.queryByIncomeOrderId(param.getIncomeOrderId());
@@ -158,6 +158,8 @@ public class IncomeOrderExtendServiceImpl implements IncomeOrderExtendService {
      */
     @Override
     public ResultVO<IPage<IncomeOrderPageVO>> page(IncomeOrderPageParam param) {
+        Long memberId = ThreadLocalUtil.MEMBER_ID_HOLDER.get();
+        param.setMemberId(memberId);
         return ResultVO.success(incomeOrderService.page(param));
     }
 

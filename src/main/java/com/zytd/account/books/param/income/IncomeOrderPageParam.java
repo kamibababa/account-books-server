@@ -27,4 +27,7 @@ public class IncomeOrderPageParam implements Serializable {
 
     @ApiModelProperty(value = "状态 1-已结清 2-未结清")
     private Integer status;
+
+    @ApiModelProperty(value = "用户ID",hidden = true)
+    private Long memberId;
 }

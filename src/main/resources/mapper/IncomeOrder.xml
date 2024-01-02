@@ -34,7 +34,7 @@
                 <if test="param.status != null">
                         and io.status = #{param.status}
                 </if>
-                <if test="param.name != null">
+                <if test="param.name != null and param.name != ''">
                         and um.name like concat('%', #{param.name}, '%')
                 </if>
         </select>
