@@ -7,6 +7,8 @@ import com.zytd.account.books.param.income.IncomeOrderPageParam;
 import com.zytd.account.books.vo.income.IncomeOrderPageVO;
 import com.zytd.account.books.vo.income.IncomeVO;
 
+import java.math.BigDecimal;
+
 /**
  * <p>
  * 收入订单表 服务类
@@ -31,4 +33,9 @@ public interface IncomeOrderService extends IService<IncomeOrder> {
      * 根据开始时间和结束时间统计
      */
     IncomeVO getSumByTime(String startTime, String endTime);
+
+    /**
+     * 获取总收入
+     */
+    Integer getTotalMoney(IncomeOrderPageParam param);
 }

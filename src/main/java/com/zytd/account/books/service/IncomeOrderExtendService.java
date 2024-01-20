@@ -3,6 +3,7 @@ package com.zytd.account.books.service;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.zytd.account.books.common.base.ResultVO;
 import com.zytd.account.books.param.income.*;
+import com.zytd.account.books.vo.income.IncomeOrderPagePageVO;
 import com.zytd.account.books.vo.income.IncomeOrderPageVO;
 import com.zytd.account.books.vo.income.IncomeOrderVO;
 import com.zytd.account.books.vo.income.IncomeVO;
@@ -31,7 +32,7 @@ public interface IncomeOrderExtendService {
     /**
      * 分页列表
      */
-    ResultVO<IPage<IncomeOrderPageVO>> page(IncomeOrderPageParam param);
+    ResultVO<IncomeOrderPagePageVO> page(IncomeOrderPageParam param);
 
     /**
      * 根据时间范围拉取收入信息

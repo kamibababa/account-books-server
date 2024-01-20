@@ -6,6 +6,7 @@ import com.zytd.account.books.common.base.ResultVO;
 import com.zytd.account.books.param.income.*;
 import com.zytd.account.books.param.product.ProductTypeAddParam;
 import com.zytd.account.books.service.IncomeOrderExtendService;
+import com.zytd.account.books.vo.income.IncomeOrderPagePageVO;
 import com.zytd.account.books.vo.income.IncomeOrderPageVO;
 import com.zytd.account.books.vo.income.IncomeOrderVO;
 import com.zytd.account.books.vo.income.IncomeVO;
@@ -56,7 +57,7 @@ public class IncomeOrderController {
 
     @ApiOperation("分页列表")
     @PostMapping("page")
-    public ResultVO<IPage<IncomeOrderPageVO>> page(@RequestBody IncomeOrderPageParam param){
+    public ResultVO<IncomeOrderPagePageVO> page(@RequestBody IncomeOrderPageParam param){
         return incomeOrderExtendService.page(param);
     }
 

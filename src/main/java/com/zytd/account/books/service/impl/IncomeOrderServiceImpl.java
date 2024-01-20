@@ -14,6 +14,8 @@ import com.zytd.account.books.vo.income.IncomeVO;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
+import java.math.BigDecimal;
+
 /**
  * <p>
  * 收入订单表 服务实现类
@@ -54,5 +56,17 @@ public class IncomeOrderServiceImpl extends ServiceImpl<IncomeOrderMapper, Incom
     @Override
     public IncomeVO getSumByTime(String startTime, String endTime) {
         return baseMapper.getSumByTime(startTime, endTime);
+    }
+
+    @Override
+    public Integer getTotalMoney(IncomeOrderPageParam param) {
+        param.setPageNum(1);
+        param.setPageSize(Integer.MAX_VALUE);
+        IPage<IncomeOrderPageVO> page = page(param);
+        if(page.getRecords().isEmpty()){
+            return 0;
+        }
+        Integer totalMoney = page.getRecords().stream().mapToInt(IncomeOrderPageVO::getTotalMoney).sum();
+        return totalMoney;
     }
 }

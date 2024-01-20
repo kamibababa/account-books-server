@@ -17,10 +17,7 @@ import com.zytd.account.books.model.ProductType;
 import com.zytd.account.books.model.UserManage;
 import com.zytd.account.books.param.income.*;
 import com.zytd.account.books.service.*;
-import com.zytd.account.books.vo.income.IncomeOrderDetailVO;
-import com.zytd.account.books.vo.income.IncomeOrderPageVO;
-import com.zytd.account.books.vo.income.IncomeOrderVO;
-import com.zytd.account.books.vo.income.IncomeVO;
+import com.zytd.account.books.vo.income.*;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateUtils;
@@ -162,10 +159,14 @@ public class IncomeOrderExtendServiceImpl implements IncomeOrderExtendService {
      * 分页列表
      */
     @Override
-    public ResultVO<IPage<IncomeOrderPageVO>> page(IncomeOrderPageParam param) {
+    public ResultVO<IncomeOrderPagePageVO> page(IncomeOrderPageParam param) {
         Long memberId = ThreadLocalUtil.MEMBER_ID_HOLDER.get();
         param.setMemberId(memberId);
-        return ResultVO.success(incomeOrderService.page(param));
+        IPage<IncomeOrderPageVO> page = incomeOrderService.page(param);
+        Integer totalMoney = incomeOrderService.getTotalMoney(param);
+        IncomeOrderPagePageVO pageVO = new IncomeOrderPagePageVO(page.getCurrent(),page.getSize(),page.getTotal(),page.getRecords());
+        pageVO.setTotalMoney(totalMoney);
+        return ResultVO.success(pageVO);
     }
 
     /**
