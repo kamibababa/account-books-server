@@ -35,6 +35,11 @@ public interface MemberExtendService {
     ResultVO<MemberVO> detail();
 
     /**
+     * 编辑人员信息
+     */
+    ResultVO<Boolean> edit(MemberVO memberVO);
+
+    /**
      * 退出登录
      */
     ResultVO<Integer> logout();

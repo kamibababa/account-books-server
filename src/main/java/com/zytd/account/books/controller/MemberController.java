@@ -15,6 +15,7 @@ import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.ibatis.annotations.Param;
 import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -31,6 +32,7 @@ import java.awt.image.BufferedImage;
 import java.io.*;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -112,28 +114,33 @@ public class MemberController {
         return memberExtendService.logout();
     }
 
-    @ApiOperation("查看会员详情")
+    @ApiOperation("编辑个人信息")
     @PostMapping("edit")
-    public ResultVO<MemberVO> edit() {
-        return memberExtendService.detail();
+    public ResultVO<Boolean> edit(@RequestBody MemberVO memberVO) {
+        return memberExtendService.edit(memberVO);
     }
 
     @ApiOperation("文件上传")
     @PostMapping("upload")
     public ResultVO<String> upload(@RequestParam("file") MultipartFile file) throws IOException {
         String originalFilename = file.getOriginalFilename();
-        AssertUtils.assertTrue(StringUtils.isBlank(originalFilename),"请选择图片");
+        AssertUtils.assertTrue(StringUtils.isNotBlank(originalFilename),"请选择图片");
         final String suffix = originalFilename.substring(originalFilename.lastIndexOf(".")).toLowerCase();
         AssertUtils.assertTrue(IMAGE_EXTENSIONS.contains(suffix),"图片格式只支持png、jpg、jpeg");
         InputStream is = null;
         FileOutputStream outputStream = null;
         try{
-            String avatarPath = "/home/opt/file/" + new SimpleDateFormat("yyyy_MM_dd") + "/" + UUID.randomUUID().toString() + file.getContentType() + suffix;
+            String relativeFile = new SimpleDateFormat("yyyy_MM_dd").format(new Date()) + "/" + getUUID() + suffix;
+            String avatarPath = "/home/opt/file/images/" + relativeFile;
+            File file1 = new File(avatarPath);
+            if(!file1.getParentFile().exists()){
+                file1.getParentFile().mkdirs();
+            }
             is = file.getInputStream();
-            outputStream = new FileOutputStream(avatarPath);
+            outputStream = new FileOutputStream(file1);
             IOUtils.copy(is, outputStream);
 //            byte[] bytes = os.toByteArray();
-            return ResultVO.success(avatarPath);
+            return ResultVO.success("/" + relativeFile);
         } catch (IOException e) {
             log.error("文件上传发生异常 -> {}", e.getMessage(),e);
             return ResultVO.error("文件上传失败");

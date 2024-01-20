@@ -127,6 +127,19 @@ public class MemberExtendServiceImpl implements MemberExtendService {
         return ResultVO.success(vo);
     }
 
+    @Override
+    public ResultVO<Boolean> edit(MemberVO memberVO) {
+        Long memberId = ThreadLocalUtil.MEMBER_ID_HOLDER.get();
+        Member member = memberService.getById(memberId);
+        Member vo = new Member();
+        vo.setNickName(memberVO.getNickName());
+        vo.setAvatar(memberVO.getAvatar());
+        vo.setUpdateTime(new Date());
+        vo.setId(member.getId());
+        memberService.updateById(vo);
+        return ResultVO.success(Boolean.TRUE);
+    }
+
     /**
      * 退出登录
      */

@@ -7,6 +7,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import com.zytd.account.books.common.base.ResultVO;
+import com.zytd.account.books.common.utils.AssertUtils;
 import com.zytd.account.books.common.utils.ThreadLocalUtil;
 import com.zytd.account.books.enums.OrderStatusEnum;
 import com.zytd.account.books.enums.OrderTypeEnum;
@@ -52,6 +53,7 @@ public class IncomeOrderExtendServiceImpl implements IncomeOrderExtendService {
         BeanUtils.copyProperties(param, incomeOrder);
         incomeOrder.setMemberId(memberId);
         incomeOrder.setUnpaidMoney(param.getTotalMoney() - param.getPaidMoney());
+        AssertUtils.assertTrue(incomeOrder.getUnpaidMoney() >=0,"应付金额不能大于总金额");
         if(incomeOrder.getUnpaidMoney() > 0){
             incomeOrder.setStatus(OrderStatusEnum.uncleared.getCode());
         }
@@ -88,8 +90,11 @@ public class IncomeOrderExtendServiceImpl implements IncomeOrderExtendService {
         if(!incomeOrder.getMemberId().equals(memberId)) return ResultVO.error("无权修改别人的订单");
         BeanUtils.copyProperties(param, incomeOrder);
         incomeOrder.setUnpaidMoney(param.getTotalMoney() - param.getPaidMoney());
+        AssertUtils.assertTrue(incomeOrder.getUnpaidMoney() >=0,"应付金额不能大于总金额");
         if(incomeOrder.getUnpaidMoney() > 0){
             incomeOrder.setStatus(OrderStatusEnum.uncleared.getCode());
+        } else {
+            incomeOrder.setStatus(OrderStatusEnum.closed_account.getCode());
         }
         incomeOrderService.updateById(incomeOrder);
         incomeOrderDetailService.removeByIncomeOrderId(param.getIncomeOrderId());

@@ -18,7 +18,7 @@ public class GlobalExceptionHandler {
     @ResponseBody
     public ResultVO<String> bizException(BizException e){
         log.error("业务异常",e);
-        return ResultVO.error(e.getMsg(),e.getCode());
+        return ResultVO.error(e.getMessage(),e.getCode());
     }
 
     @ExceptionHandler(value = Exception.class)
